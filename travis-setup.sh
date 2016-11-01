@@ -20,4 +20,5 @@ conda config --add channels defaults
 conda config --add channels r
 conda config --add channels bioconda
 
-conda create -n testenv snakemake pytest
+conda install snakemake pytest
+
