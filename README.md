@@ -4,7 +4,7 @@ This is a proof-of-concept for figuring out a good way of testing [Snakemake
 wrappers](https://bitbucket.org/snakemake/snakemake-wrappers).
 
 With the [`bioconda`](https://bioconda.github.io/) channel set up, install
-dependencies:
+the dependencies:
 
 ```
 conda create -n testenv snakemake pytest
