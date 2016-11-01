@@ -1,5 +1,6 @@
-#language: python
-#install: bash travis-setup.sh
-#before_script:
-#  - export PATH=/anaconda/bin:$PATH
-#script: py.test test/tests.py -v
+language: python
+sudo: required
+install: bash travis-setup.sh
+before_script:
+  - export PATH=/anaconda/bin:$PATH
+script: py.test test/tests.py -v
