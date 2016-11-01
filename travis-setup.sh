@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+set -x
 
 # Sets up travis-ci environment for testing bioconda-utils.
 
@@ -21,4 +22,3 @@ conda config --add channels r
 conda config --add channels bioconda
 
 conda install snakemake pytest
-
