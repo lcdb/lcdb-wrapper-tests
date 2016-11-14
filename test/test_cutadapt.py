@@ -10,7 +10,7 @@ def test_cutadapt_simple(sample1_se_fq, tmpdir):
                     output:
                         fastq='sample1_R1.trim.fastq.gz'
                     params: extra='-a AAA'
-                    wrapper: {wrapper}
+                    wrapper: "file://wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
         {
@@ -40,7 +40,7 @@ def test_cutadapt_simple_with_log(sample1_se_fq, tmpdir):
                         fastq='sample1_R1.trim.fastq.gz'
                     params: extra='-a AAA'
                     log: 'sample1.cutadapt.log'
-                    wrapper: {wrapper}
+                    wrapper: "file://wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
         {
@@ -74,7 +74,7 @@ def test_cutadapt_pe(sample1_pe_fq, tmpdir):
                         R2='sample2_R1.trim.fastq.gz',
                     params: extra='-a AAA'
                     log: 'sample1.cutadapt.log'
-                    wrapper: {wrapper}
+                    wrapper: "file://wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
         {

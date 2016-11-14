@@ -76,7 +76,7 @@ def run(path, snakefile, check, input_data_func=None, tmpdir=None, **params):
 
         # write the snakefile, filling in the "wrapper" placeholder
         with open(os.path.join(tmpdir, 'Snakefile'), 'w') as fout:
-            fout.write(dedent(snakefile.format(wrapper='"file://wrapper"')))
+            fout.write(dedent(snakefile))
 
         # Create the input data
         input_data_func(tmpdir)
