@@ -8,7 +8,7 @@ try:
     extra = snakemake.params.extra
 except AttributeError:
     extra = ""
-log = log_fmt_shell()
+log = snakemake.log_fmt_shell()
 shell(
     "cutadapt "
     "{extra} "

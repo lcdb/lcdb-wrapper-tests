@@ -5,13 +5,29 @@ sequence from your high-throughput sequencing reads.
 
 ## Input
 
-fastq : FASTQ file. Can be gzipped.
+All inputs are FASTQ files, and they can be optionally gzipped.
 
-See examples below for other input options.
+### Single-end mode:
+
+fastq : single-end FASTQ file
+
+### Paired-end mode:
+
+R1 : Read 1 FASTQ
+R2 : Read 2 FASTQ
+
+See examples below for other input options including adapters.
 
 ## Output
+q
+### Single-end mode:
 
-fastq : Trimmed fastq file.
+fastq : Trimmed FASTQ file.
+
+### Paired-end mode:
+
+R1 : trimmed R1 FASTQ file
+R2 : trimmed R2 FASTQ file
 
 See examples below for other output options.
 
