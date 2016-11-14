@@ -30,7 +30,7 @@ def md5sum(filename):
     return hashlib.md5(data).hexdigest()
 
 
-def run(path, snakefile, check, input_data_func=None, **params):
+def run(path, snakefile, check, input_data_func=None, tmpdir=None, **params):
     """
     Parameters
     ----------
@@ -53,12 +53,17 @@ def run(path, snakefile, check, input_data_func=None, **params):
         temp dir, but before the test is run. It is expected to create any data
         required in whatever directory structure is required.
 
+    tmpdir : None or path
+
     """
     # store any tempdirs here for later deletion
     to_clean_up = []
 
 
-    tmpdir = tempfile.mkdtemp(prefix='.test', dir=os.path.abspath('.'))
+    if tmpdir is None:
+        tmpdir = tempfile.mkdtemp(prefix='.test', dir=os.path.abspath('.'))
+    else:
+        tmpdir = str(tmpdir)
     try:
         # copy over the wrapper
         wrapper_dir = os.path.join(tmpdir, 'wrapper')

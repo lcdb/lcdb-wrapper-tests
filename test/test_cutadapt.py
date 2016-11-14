@@ -5,7 +5,7 @@ import tempfile
 import shutil
 from utils import run, dpath, rm, symlink_in_tempdir
 
-def test_cutadapt_simple(sample1_se_fq):
+def test_cutadapt_simple(sample1_se_fq, tmpdir):
     snakefile = '''
                 rule cutadapt:
                     input:
@@ -31,10 +31,10 @@ def test_cutadapt_simple(sample1_se_fq):
 
         assert os.path.getsize('sample1_R1.fastq.gz') != os.path.getsize('sample1_R1.trim.fastq.gz')
 
-    run(dpath('../wrappers/cutadapt'), snakefile, check, input_data_func)
+    run(dpath('../wrappers/cutadapt'), snakefile, check, input_data_func, tmpdir)
 
 
-def test_cutadapt_simple_with_log(sample1_se_fq):
+def test_cutadapt_simple_with_log(sample1_se_fq, tmpdir):
     snakefile = '''
                 rule cutadapt:
                     input:
@@ -62,11 +62,11 @@ def test_cutadapt_simple_with_log(sample1_se_fq):
 
         assert os.path.getsize('sample1_R1.fastq.gz') != os.path.getsize('sample1_R1.trim.fastq.gz')
 
-    run(dpath('../wrappers/cutadapt'), snakefile, check, input_data_func)
+    run(dpath('../wrappers/cutadapt'), snakefile, check, input_data_func, tmpdir)
 
 
 
-def test_cutadapt_pe(sample1_pe_fq):
+def test_cutadapt_pe(sample1_pe_fq, tmpdir):
     snakefile = '''
                 rule cutadapt:
                     input:
@@ -97,4 +97,4 @@ def test_cutadapt_pe(sample1_pe_fq):
 
         assert os.path.getsize('sample1_R1.fastq.gz') != os.path.getsize('sample1_R1.trim.fastq.gz')
 
-    run(dpath('../wrappers/cutadapt'), snakefile, check, input_data_func)
+    run(dpath('../wrappers/cutadapt'), snakefile, check, input_data_func, tmpdir)

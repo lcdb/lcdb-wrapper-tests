@@ -43,17 +43,22 @@ Here's an annotated example.
 # Test utilities we'll be using.
 from utils import run, dpath, symlink_in_tempdir
 
-# `run` does most of the work. It creates a tempdir, copys over input data,
-# Snakefile, and wrapper, runs the Snakefile, and runs a user-provided test
-# function against the output.
+#   `run` does most of the work. It creates a tempdir, copys over input data,
+#   Snakefile, and wrapper, runs the Snakefile, and runs a user-provided test
+#   function against the output.
 #
-# `dpath` figures out the path the wrapper
+#   `dpath` figures out the path the wrapper
 #
-# `symlink_in_tempdir` is a decorator function that makes it easy to use pytest
-# fixtures that download example data and put it in a place expected by the test.
+#   `symlink_in_tempdir` is a decorator function that makes it easy to use pytest
+#   fixtures that download example data and put it in a place expected by the test.
 
 
-def test_wrapper(sample1_se_fq):
+# The test function should start with "test_". It will typically have at least
+# two fixtures as arguments: one that downloads test data (here, sample1_se_fq
+# which can be found in conftest.py), and `tmpdir`, which runs the test in
+a temp # dir managed by py.test (which helps with debugging).
+
+def test_wrapper(sample1_se_fq, tmpdir):
 
     # Let's assume we're testing a wrapper that counts the number of fastq reads.
 
