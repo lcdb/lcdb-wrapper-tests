@@ -9,10 +9,22 @@ try:
 except AttributeError:
     extra = ""
 log = snakemake.log_fmt_shell()
-shell(
-    "cutadapt "
-    "{extra} "
-    "{snakemake.input.fastq} "
-    "-o {snakemake.output.fastq} "
-    "{log}"
-)
+
+if 'R1' in snakemake.input.keys() and 'R2' in snakemake.input.keys():
+    shell(
+        "cutadapt "
+        "{extra} "
+        "{snakemake.input.R2} "
+        "{snakemake.input.R2} "
+        "-o {snakemake.output.R1} "
+        "-p {snakemake.output.R2} "
+        "{log}"
+    )
+else:
+    shell(
+        "cutadapt "
+        "{extra} "
+        "{snakemake.input.fastq} "
+        "-o {snakemake.output.fastq} "
+        "{log}"
+    )
