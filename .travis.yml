@@ -3,4 +3,4 @@ sudo: required
 install: bash travis-setup.sh
 before_script:
   - export PATH=/anaconda/bin:$PATH
-script: py.test test/tests.py -v
+script: py.test test -v

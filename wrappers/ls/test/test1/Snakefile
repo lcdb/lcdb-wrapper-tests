@@ -1,4 +1,0 @@
-rule ls:
-    input: 'testfile'
-    output: 'output'
-    wrapper: "file://"

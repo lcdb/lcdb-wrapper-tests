@@ -21,4 +21,4 @@ conda config --add channels defaults
 conda config --add channels r
 conda config --add channels bioconda
 
-conda install -y snakemake pytest
+conda install -y --file requirements.txt
