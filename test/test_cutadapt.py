@@ -1,8 +1,5 @@
 import os
-import pytest
 import gzip
-import tempfile
-import shutil
 from utils import run, dpath, rm, symlink_in_tempdir
 
 def test_cutadapt_simple(sample1_se_fq, tmpdir):
