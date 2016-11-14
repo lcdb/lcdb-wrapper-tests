@@ -1,9 +1,6 @@
 # This file demonstrates tests for the `demo` wrapper. It is heavily commented,
 # and is included as part of the test suite to ensure that it's correct.
 
-import os
-import gzip
-
 from utils import run
 # `run` does most of the work. It creates a tempdir, copys over input data,
 # Snakefile, and wrapper, runs the Snakefile, and runs a user-provided test
