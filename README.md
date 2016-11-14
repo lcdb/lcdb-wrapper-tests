@@ -52,6 +52,7 @@ from utils import run, dpath, symlink_in_tempdir
 # `symlink_in_tempdir` is a decorator function that makes it easy to use pytest
 # fixtures that download example data and put it in a place expected by the test.
 
+
 def test_wrapper(sample1_se_fq):
 
     # Let's assume we're testing a wrapper that counts the number of fastq reads.
@@ -68,13 +69,17 @@ def test_wrapper(sample1_se_fq):
                     wrapper: {wrapper}
                 '''
 
-    # Next we define a function that will be called right before running the
-    # Snakefile. Here we use symlink_in_tempdir. We give it the temp filename
-    # provided by the fixture, and make sure it gets symlinked to the file
-    # "sample.fastq.gz" (our input file for  the rule in the test snakefile)
-    # within the temporary testing directory.
 
-    input_data_func = symlink_in_tempdir(sample1_se_fq, 'sample.fastq.gz')
+    # Next we define a function that will be called right before running the
+    # Snakefile. Here we use symlink_in_tempdir. We give it a dictionary mapping
+    # the temp filename provided by the fixture to its intended location as an
+    # input file for the Snakefile.
+
+    input_data_func = symlink_in_tempdir(
+        {
+            sample1_se_fq: 'sample.fastq.gz'
+        }
+    )
 
 
     # Now we define a function that will test the output. It will be called
@@ -83,6 +88,8 @@ def test_wrapper(sample1_se_fq):
 
     def check():
         assert int(open('sample.count')) == 2481
+
+
 
     # Last, we call the `run` function with what we've just defined. Note that
     # paths to wrappers are provided relative to the file from which `dpath` is
