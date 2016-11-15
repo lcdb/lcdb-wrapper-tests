@@ -1,4 +1,4 @@
-git+https://github.com/lcdb/lcdblib.git@aligners
+git+https://github.com/lcdb/lcdblib.git@master
 
 # pip install snakemake until the bioconda build finishes
 snakemake==3.9
