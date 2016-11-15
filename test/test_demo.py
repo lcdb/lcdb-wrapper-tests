@@ -1,9 +1,6 @@
 # This file demonstrates tests for the `demo` wrapper. It is heavily commented,
 # and is included as part of the test suite to ensure that it's correct.
 
-import os
-import gzip
-
 from utils import run
 # `run` does most of the work. It creates a tempdir, copys over input data,
 # Snakefile, and wrapper, runs the Snakefile, and runs a user-provided test
@@ -52,14 +49,14 @@ def test_demo(sample1_se_fq, tmpdir):
     # automatically run through textwrap.dedent later so you don't have to
     # worry about indentation.
     #
-    # There is a `{wrapper}` placeholder which will automatically fill in the
-    # path to the wrapper within the temp dir so we don't have to manage any of
-    # that here.
+    # The wrapper will be copied to a subdirectory of the temp dir called,
+    # appropriately enough, "wrapper". So that's the name of the wrapper
+    # within the snakefile.
     snakefile = '''
     rule demo:
         input: 'a.fastq.gz'
         output: 'b.fastq.gz'
-        wrapper: {wrapper}
+        wrapper: "file://wrapper"
     '''
 
     # Map fixtures to input files
@@ -123,7 +120,7 @@ def test_demo_pe(sample1_pe_fq, tmpdir):
         output:
             R1='b1.fastq.gz',
             R2='b2.fastq.gz'
-        wrapper: {wrapper}
+        wrapper: "file://wrapper"
     '''
 
     # Map fixture to input files

@@ -11,8 +11,7 @@ def sample1_se_fq(tmpdir_factory):
     url = 'https://github.com/lcdb/lcdb-test-data/blob/add-data/data/{}?raw=true'.format(fn)
     basename = os.path.basename(fn)
     shell('wget -O- {url} > {d}/{basename}')
-    yield os.path.join(d, basename)
-    shutil.rmtree(d)
+    return os.path.join(d, basename)
 
 
 @pytest.fixture(scope='session')
@@ -28,3 +27,13 @@ def sample1_pe_fq(tmpdir_factory):
         shell('wget -O- {url} > {d}/{basename}')
         pair.append(os.path.join(d, basename))
     return pair
+
+
+@pytest.fixture(scope='session')
+def dm6_fa(tmpdir_factory):
+    fn = 'seq/2L.fa'
+    d = str(tmpdir_factory.mktemp('dm6_fa'))
+    url = 'https://github.com/lcdb/lcdb-test-data/blob/add-data/data/{}?raw=true'.format(fn)
+    basename = os.path.basename(fn)
+    shell('wget -O- {url} > {d}/{basename}')
+    return os.path.join(d, basename)
