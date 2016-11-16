@@ -3,6 +3,7 @@ import pytest
 import tempfile
 import shutil
 from snakemake.shell import shell
+from lcdblib.snakemake import aligners
 
 @pytest.fixture(scope='session')
 def sample1_se_fq(tmpdir_factory):
@@ -38,3 +39,14 @@ def dm6_fa(tmpdir_factory):
     shell('wget -q -O- {url} > {d}/{basename}')
     return os.path.join(d, basename)
 
+
+@pytest.fixture(scope='session')
+def hisat2_indexes(tmpdir_factory):
+    d = str(tmpdir_factory.mktemp('hisat2_indexes'))
+    fns = []
+    for fn in aligners.hisat2_index_from_prefix('seq/2L'):
+        url = 'https://github.com/lcdb/lcdb-test-data/blob/master/data/{}?raw=true'.format(fn)
+        basename = os.path.basename(fn)
+        shell('wget -q -O- {url} > {d}/{basename}')
+        fns.append(os.path.join(d, basename))
+    return fns
