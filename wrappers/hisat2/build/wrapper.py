@@ -6,12 +6,9 @@ __license__ = "MIT"
 from snakemake.shell import shell
 from lcdblib.snakemake import aligners
 
-try:
-    extra = snakemake.params['extra']
-except AttributeError:
-    extra = ""
-
+extra = snakemake.params.get('extra', '')
 log = snakemake.log_fmt_shell()
+
 prefix = aligners.prefix_from_hisat2_index(snakemake.output.index)
 shell(
     "hisat2-build "

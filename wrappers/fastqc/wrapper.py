@@ -24,11 +24,8 @@ for s in strip:
     outfile = outfile.replace(s, '')
 out_zip = os.path.join(outdir, outfile + '_fastqc.zip')
 out_html = os.path.join(outdir, outfile + '_fastqc.html')
-try:
-    extra = snakemake.params.extra
-except AttributeError:
-    extra = ""
 
+extra = snakemake.params.get('extra', '')
 log = snakemake.log_fmt_shell()
 
 shell(
