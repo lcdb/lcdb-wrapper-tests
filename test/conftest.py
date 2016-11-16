@@ -55,9 +55,30 @@ def dm6_fa(tmpdir_factory):
 
 
 @pytest.fixture(scope='session')
+def sample1_se_bam(tmpdir_factory):
+    d = str(tmpdir_factory.mktemp('sample1_se_bam'))
+    fn = 'samples/sample1/sample1.single.bam'
+    return _download_file(fn, d)
+
+
+@pytest.fixture(scope='session')
+def sample1_pe_bam(tmpdir_factory):
+    d = str(tmpdir_factory.mktemp('sample1_pe_bam'))
+    fn = 'samples/sample1/sample1.paired.bam'
+    return _download_file(fn, d)
+
+
+@pytest.fixture(scope='session')
 def hisat2_indexes(tmpdir_factory):
     d = str(tmpdir_factory.mktemp('hisat2_indexes'))
     fns = []
     for fn in aligners.hisat2_index_from_prefix('seq/2L'):
         fns.append(_download_file(fn, d))
     return fns
+
+
+@pytest.fixture(scope='session')
+def annotation(tmpdir_factory):
+    fn = 'annotation/dm6.gtf'
+    d = str(tmpdir_factory.mktemp('annotation'))
+    return _download_file(fn, d)
