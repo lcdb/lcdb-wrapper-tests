@@ -72,6 +72,11 @@ can read the code for details but basically it copies the Snakefile and
 configured input data (via the `symlink_in_tempdir` function) to the directory
 `/tmp/pytest-of-$USER/pytest-$N/test_cutadapt_simple0/`.
 
-**Importantly, this means that if a test fails and you need to troubleshoot,
-you can go to `/tmp/pytest-of-$USER/pytest-$N/$TEST_NAME` directory and you'll
-see the Snakefile, input data, and any created output files.**
+**Importantly, this means that for any test, you can go to
+`/tmp/pytest-of-$USER/pytest-$N/$TEST_NAME` directory and you'll see the
+Snakefile, input data, and any created output files.** This is useful for
+writing the tests in the first place (add an `assert False` to trigger failure,
+then go look at the output) or for troubleshooting (e.g., go to the directory
+and run `snakemake` to see what happens).
+
+
