@@ -8,9 +8,9 @@ from snakemake.shell import shell
 def sample1_se_fq(tmpdir_factory):
     fn = 'samples/sample1/sample1_R1.fastq.gz'
     d = str(tmpdir_factory.mktemp('sample1_se_fq'))
-    url = 'https://github.com/lcdb/lcdb-test-data/blob/add-data/data/{}?raw=true'.format(fn)
+    url = 'https://github.com/lcdb/lcdb-test-data/blob/master/data/{}?raw=true'.format(fn)
     basename = os.path.basename(fn)
-    shell('wget -O- {url} > {d}/{basename}')
+    shell('wget -q -O- {url} > {d}/{basename}')
     return os.path.join(d, basename)
 
 
@@ -22,9 +22,9 @@ def sample1_pe_fq(tmpdir_factory):
         'samples/sample1/sample1_R1.fastq.gz',
         'samples/sample1/sample1_R2.fastq.gz'
     ]:
-        url = 'https://github.com/lcdb/lcdb-test-data/blob/add-data/data/{}?raw=true'.format(fn)
+        url = 'https://github.com/lcdb/lcdb-test-data/blob/master/data/{}?raw=true'.format(fn)
         basename = os.path.basename(fn)
-        shell('wget -O- {url} > {d}/{basename}')
+        shell('wget -q -O- {url} > {d}/{basename}')
         pair.append(os.path.join(d, basename))
     return pair
 
@@ -33,7 +33,8 @@ def sample1_pe_fq(tmpdir_factory):
 def dm6_fa(tmpdir_factory):
     fn = 'seq/2L.fa'
     d = str(tmpdir_factory.mktemp('dm6_fa'))
-    url = 'https://github.com/lcdb/lcdb-test-data/blob/add-data/data/{}?raw=true'.format(fn)
+    url = 'https://github.com/lcdb/lcdb-test-data/blob/master/data/{}?raw=true'.format(fn)
     basename = os.path.basename(fn)
-    shell('wget -O- {url} > {d}/{basename}')
+    shell('wget -q -O- {url} > {d}/{basename}')
     return os.path.join(d, basename)
+
