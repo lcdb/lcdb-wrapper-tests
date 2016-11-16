@@ -24,7 +24,7 @@ def test_cutadapt_simple(sample1_se_fq, tmpdir):
         """
         a = sum(1 for _ in gzip.open('sample1_R1.fastq.gz'))
         b = sum(1 for _ in gzip.open('sample1_R1.trim.fastq.gz'))
-        assert a == b == 9924
+        assert a == b > 9000
 
         assert os.path.getsize('sample1_R1.fastq.gz') != os.path.getsize('sample1_R1.trim.fastq.gz')
 
@@ -54,7 +54,7 @@ def test_cutadapt_simple_with_log(sample1_se_fq, tmpdir):
         """
         a = sum(1 for _ in gzip.open('sample1_R1.fastq.gz'))
         b = sum(1 for _ in gzip.open('sample1_R1.trim.fastq.gz'))
-        assert a == b == 9924
+        assert a == b > 9000
         assert 'This is cutadapt' in open('sample1.cutadapt.log').readline()
 
         assert os.path.getsize('sample1_R1.fastq.gz') != os.path.getsize('sample1_R1.trim.fastq.gz')
@@ -89,7 +89,7 @@ def test_cutadapt_pe(sample1_pe_fq, tmpdir):
         """
         a = sum(1 for _ in gzip.open('sample1_R1.fastq.gz'))
         b = sum(1 for _ in gzip.open('sample1_R1.trim.fastq.gz'))
-        assert a == b == 9924
+        assert a == b > 9000
         assert 'This is cutadapt' in open('sample1.cutadapt.log').readline()
 
         assert os.path.getsize('sample1_R1.fastq.gz') != os.path.getsize('sample1_R1.trim.fastq.gz')
