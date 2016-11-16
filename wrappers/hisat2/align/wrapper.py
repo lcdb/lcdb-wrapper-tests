@@ -43,7 +43,7 @@ shell(
     "> {output_prefix}.tmp.bam && rm {output_prefix}.sam"
 )
 
-# sort the BAM
+# sort the BAM and clean up
 shell(
     "samtools sort "
     "-o {snakemake.output.bam} "
@@ -52,5 +52,3 @@ shell(
     "{output_prefix}.tmp.bam "
     "&& rm {output_prefix}.tmp.bam "
 )
-
-    
