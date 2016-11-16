@@ -3,10 +3,7 @@
 from snakemake.shell import shell
 
 # All wrappers must be able to handle an optional params.extra.
-try:
-    extra = snakemake.params.extra
-except AttributeError:
-    extra = ""
+extra = snakemake.params.get('extra', '')
 
 
 # This lets us handle whether to write to a log file or to write to stdout.

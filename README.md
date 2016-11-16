@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/lcdb/lcdb-wrapper-tests.svg?branch=master)](https://travis-ci.org/lcdb/lcdb-wrapper-tests)
+
 # Testing Snakemake wrappers
 
 This is a proof-of-concept for figuring out a good way of testing [Snakemake

@@ -4,10 +4,8 @@ __email__ = "dalerr@niddk.nih.gov"
 __license__ = "MIT"
 
 from snakemake.shell import shell
-try:
-    extra = snakemake.params.extra
-except AttributeError:
-    extra = ""
+
+extra = snakemake.params.get('extra', '')
 log = snakemake.log_fmt_shell()
 
 if 'R1' in snakemake.input.keys() and 'R2' in snakemake.input.keys():

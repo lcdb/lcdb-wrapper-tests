@@ -22,3 +22,4 @@ conda config --add channels r
 conda config --add channels bioconda
 
 conda install -y --file requirements.txt
+pip install -r pip-requirements.txt
