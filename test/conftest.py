@@ -82,3 +82,10 @@ def annotation(tmpdir_factory):
     fn = 'annotation/dm6.gtf'
     d = str(tmpdir_factory.mktemp('annotation'))
     return _download_file(fn, d)
+
+
+@pytest.fixture(scope='session')
+def annotation_refflat(tmpdir_factory):
+    fn = 'annotation/dm6.refflat'
+    d = str(tmpdir_factory.mktemp('annotation_refflat'))
+    return _download_file(fn, d)
