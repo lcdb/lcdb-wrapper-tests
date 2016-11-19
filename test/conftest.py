@@ -5,6 +5,7 @@ import shutil
 from snakemake.shell import shell
 from snakemake.utils import makedirs
 from lcdblib.snakemake import aligners
+from utils import run, dpath, symlink_in_tempdir
 
 # test data url
 URL = 'https://github.com/lcdb/lcdb-test-data/blob/master/data/{}?raw=true'
@@ -25,7 +26,6 @@ def _download_file(fn, d):
     basename = os.path.basename(fn)
     shell('wget -q -O- {url} > {dest}')
     return dest
-
 
 
 @pytest.fixture(scope='session')
@@ -69,13 +69,43 @@ def sample1_pe_bam(tmpdir_factory):
 
 
 @pytest.fixture(scope='session')
-def hisat2_indexes(tmpdir_factory):
+def hisat2_indexes(dm6_fa, tmpdir_factory):
     d = str(tmpdir_factory.mktemp('hisat2_indexes'))
-    fns = []
-    for fn in aligners.hisat2_index_from_prefix('seq/2L'):
-        fns.append(_download_file(fn, d))
-    return fns
+    snakefile = '''
+    rule hisat2:
+        input: fasta='2L.fa'
+        output: index=['2L.1.ht2', '2L.2.ht2']
+        wrapper: 'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            dm6_fa: '2L.fa'
+        }
+    )
+    def check():
+        pass
+    run(dpath('../wrappers/hisat2/build'), snakefile, check, input_data_func, d)
+    return aligners.hisat2_index_from_prefix(os.path.join(d, '2L'))
 
+
+@pytest.fixture(scope='session')
+def bowtie2_indexes(dm6_fa, tmpdir_factory):
+    d = str(tmpdir_factory.mktemp('bowtie2_indexes'))
+    snakefile = '''
+    rule bowtie2:
+        input: fasta='2L.fa'
+        output: index=['2L.1.bt2', '2L.2.bt2']
+        wrapper: 'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            dm6_fa: '2L.fa'
+        }
+    )
+    def check():
+        pass
+    run(dpath('../wrappers/bowtie2/build'), snakefile, check, input_data_func, d)
+    return aligners.bowtie2_index_from_prefix(os.path.join(d, '2L'))
 
 @pytest.fixture(scope='session')
 def annotation(tmpdir_factory):
