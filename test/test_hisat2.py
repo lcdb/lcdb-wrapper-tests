@@ -5,7 +5,6 @@ from lcdblib.snakemake import aligners
 from utils import run, dpath, rm, symlink_in_tempdir
 
 
-
 def test_hisat2_build(dm6_fa, tmpdir):
     snakefile = '''
                 rule hisat2_build:
