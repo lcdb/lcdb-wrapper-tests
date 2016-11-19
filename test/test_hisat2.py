@@ -31,7 +31,7 @@ def test_hisat2_build(dm6_fa, tmpdir):
 
 def _dict_of_hisat2_indexes(hisat2_indexes, prefix):
     d = {}
-    indexes = aligners.hisat2_index_from_prefix('seq/2L')
+    indexes = aligners.hisat2_index_from_prefix(prefix)
     hisat2_indexes = sorted(hisat2_indexes)
     indexes = sorted(indexes)
     for k, v in zip(hisat2_indexes, indexes):
