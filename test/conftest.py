@@ -119,3 +119,22 @@ def annotation_refflat(tmpdir_factory):
     fn = 'annotation/dm6.refflat'
     d = str(tmpdir_factory.mktemp('annotation_refflat'))
     return _download_file(fn, d)
+
+@pytest.fixture(scope='session')
+def fastqc(sample1_se_fq, tmpdir_factory):
+    snakefile = '''
+    rule fastqc:
+        input:
+            fastq='sample1_R1.fastq.gz'
+        output:
+            html='sample1_R1_fastqc.html',
+            zip='sample1_R1_fastqc.zip'
+        wrapper: "file://wrapper"'''
+    input_data_func=symlink_in_tempdir(
+        {
+            sample1_se_fq: 'sample1_R1.fastq.gz'
+        }
+    )
+    tmpdir = str(tmpdir_factory.mktemp('fastqc_fixture'))
+    run(dpath('../wrappers/fastqc'), snakefile, None, input_data_func, tmpdir)
+    return os.path.join(tmpdir, 'sample1_R1_fastqc.zip')
