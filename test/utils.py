@@ -30,7 +30,7 @@ def md5sum(filename):
     return hashlib.md5(data).hexdigest()
 
 
-def run(path, snakefile, check, input_data_func=None, tmpdir=None, **params):
+def run(path, snakefile, check=None, input_data_func=None, tmpdir=None, **params):
     """
     Parameters
     ----------
@@ -41,10 +41,13 @@ def run(path, snakefile, check, input_data_func=None, tmpdir=None, **params):
     snakefile : str
         Contents of a snakefile. `dedent()` will be run on it.
 
-    check : callable
+    check : callable or None
         After running the snakefile on the input data, this function will be
         called while inside the directory. This function is where the actual
         tests (assertions etc) should be performed.
+
+        If None, the snakefile will be run but no tests will be performed on
+        the output.
 
     input_data_func : None | callable
         If not None, then this callable object will be called with
@@ -86,11 +89,11 @@ def run(path, snakefile, check, input_data_func=None, tmpdir=None, **params):
         assert success, 'expected successful execution'
 
         # Change to the tmpdir and run the test function
-        # TODO: context manager for os.chdir?
-        cwd = os.getcwd()
-        os.chdir(tmpdir)
-        check()
-        os.chdir(cwd)
+        if check is not None:
+            cwd = os.getcwd()
+            os.chdir(tmpdir)
+            check()
+            os.chdir(cwd)
 
     finally:
         for t in to_clean_up:

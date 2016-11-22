@@ -38,7 +38,11 @@ shell(
     '{snakemake.input} '
     '{log} '
 )
-if out_zip != snakemake.output.zip:
+
+def same_file(x, y):
+    return os.path.abspath(x) == os.path.abspath(y)
+
+if not same_file(out_zip,snakemake.output.zip):
     shell('mv {out_zip} {snakemake.output.zip}')
-if out_html != snakemake.output.html:
+if not same_file(out_html, snakemake.output.html):
     shell('mv {out_html} {snakemake.output.html}')
