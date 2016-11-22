@@ -15,3 +15,4 @@ subread >=1.5.0
 picard >=2.5.0
 r >=3.3.1
 bowtie2 >=2.2.8
+multiqc >=0.8
