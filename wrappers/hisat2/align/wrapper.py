@@ -1,5 +1,5 @@
 __author__ = "Ryan Dale"
-__copyright__ = "Copyright 2016, Ryan Dale"
+__copyright__ = "Copyright 2016, Ryan Dale" 
 __email__ = "dalerr@niddk.nih.gov"
 __license__ = "MIT"
 
@@ -12,14 +12,22 @@ samtools_sort_extra = snakemake.params.get('samtools_sort_extra', '')
 
 log = snakemake.log_fmt_shell()
 
-# Handle paired-end reads. Since snakemake automatically converts a one-element
-# list to a string, here we detect single-end reads by checking if input.fastq
-# is a string.
-if isinstance(snakemake.input.fastq, str):
-    fastqs = '-U {0} '.format(snakemake.input.fastq)
+# Hisat2 can either align using provided FASTQ files or given an SRA identifier.
+if snakemake.input.get('fastq', ''):
+    # Handle paired-end reads. Since snakemake automatically converts a one-element
+    # list to a string, here we detect single-end reads by checking if input.fastq
+    # is a string.
+    if isinstance(snakemake.input.fastq, str):
+        fastqs = '-U {0} '.format(snakemake.input.fastq)
+    else:
+        assert len(snakemake.input.fastq) == 2
+        fastqs = '-1 {0} -2 {1} '.format(*snakemake.input.fastq)
 else:
-    assert len(snakemake.input.fastq) == 2
-    fastqs = '-1 {0} -2 {1} '.format(*snakemake.input.fastq)
+    fastqs = ''
+    try:
+        assert '--sra-acc' in hisat2_extra
+    except:
+        raise ValueError("You must provide a FASTQ file or use the --sra-acc option.")
 
 prefix = aligners.prefix_from_hisat2_index(snakemake.input.index)
 
