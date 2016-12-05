@@ -2,3 +2,5 @@ channels:
   - bioconda
 dependencies:
   - bowtie2
+  - pip:
+      - git+git://github.com/lcdb/lcdblib
