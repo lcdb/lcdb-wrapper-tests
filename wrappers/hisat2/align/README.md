@@ -37,8 +37,7 @@ Example of paired-end mode:
 from lcdblib.snakemake import aligners
 rule hisat2:
     input:
-        R1="{sample}_R1.fastq.gz",
-        R2="{sample}_R2.fastq.gz",
+        fastq=["{sample}_R1.fastq.gz", "{sample}_R2.fastq.gz"],
         index=aligners.hisat2_index_from_prefix('/data/assembly/assembly')
     output:
         bam="mapped/{sample}.sorted.bam"
@@ -46,6 +45,19 @@ rule hisat2:
         "file://wrapper"
 ```
 
+Example of SRA Accession Number:
+
+```python
+from lcdblib.snakemake import aligners
+rule hisat2:
+    input:
+        index=aligners.hisat2_index_from_prefix('/data/assembly/assembly')
+    output:
+        bam="mapped/{sample}.sorted.bam"
+    params: hisat2_extra="--sra-acc SRR1164407"
+    wrapper:
+        "file://wrapper"
+```
 
 When aligning, use 8 threads and set a max intron length.  When creating the
 BAM, filter out unmapped reads. When sorting, use 4 threads and use the highest
@@ -75,8 +87,7 @@ a coordinate-sorted BAM.
 from lcdblib.snakemake import aligners
 rule hisat2:
     input:
-        R1="{sample}_R1.fastq.gz",
-        R2="{sample}_R2.fastq.gz",
+        fastq=["{sample}_R1.fastq.gz", R2="{sample}_R2.fastq.gz"],
         index=aligners.hisat2_index_from_prefix('/data/assembly/assembly')
     output:
         bam="mapped/{sample}.sorted.bam"
@@ -98,12 +109,19 @@ based on these files.
 
 ### Paired-end mode
 
-`R1`: read 1 FASTQ file, can be gzipped
-`R2`: read 2 FASTQ file, can be gzipped
+`fastq`: a list with read 1 FASTQ file and read 2 FASTQ file, each FASTQ can be gzipped
 
 `index`: List of the `*.ht2` index files. See the examples for a good way to
 create this list. The wrapper will figure out the prefix to provide to HISAT2
 based on these files.
+
+### SRA Accession mode
+
+`index`: List of the `*.ht2` index files. See the examples for a good way to
+create this list. The wrapper will figure out the prefix to provide to HISAT2
+based on these files.
+
+`hisat2_extra`: Must contain the `--sra-acc` option.
 
 ## Output
 
