@@ -11,8 +11,10 @@ extra = snakemake.params.get('extra', '')
 log = snakemake.log_fmt_shell()
 
 
-# This demo shows how to handle paired-end and single-end input data as two
-# different cases, depending on whether the rule's input included an "R2" key
-# or not.
-
-shell('infer_experiment -r {input.bed} -i {input.bam} {params.extra} > {output[0]}')
+shell(
+    'infer_experiment '
+    '-i {snakemake.input.bam} '
+    '-r {snakemake.input.bed} '
+    '{snakemake.params.extra} '
+    '> {snakemake.output[0]} '
+    '{log}')
