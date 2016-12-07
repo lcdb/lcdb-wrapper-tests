@@ -3,3 +3,5 @@ channels:
 dependencies:
   - bowtie2
   - samtools
+  - pip:
+      - git+https://github.com/lcdb/lcdblib.git@master

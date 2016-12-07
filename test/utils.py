@@ -30,7 +30,7 @@ def md5sum(filename):
     return hashlib.md5(data).hexdigest()
 
 
-def run(path, snakefile, check=None, input_data_func=None, tmpdir=None, **params):
+def run(path, snakefile, check=None, input_data_func=None, tmpdir=None, use_conda=False, **params):
     """
     Parameters
     ----------
@@ -85,7 +85,7 @@ def run(path, snakefile, check=None, input_data_func=None, tmpdir=None, **params
         input_data_func(tmpdir)
 
         success = snakemake(os.path.join(tmpdir, 'Snakefile'), workdir=tmpdir, stats='stats.txt',
-                            snakemakepath=SCRIPTPATH, config={}, **params)
+                            snakemakepath=SCRIPTPATH, config={}, use_conda=use_conda, **params)
         assert success, 'expected successful execution'
 
         # Change to the tmpdir and run the test function
