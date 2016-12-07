@@ -40,7 +40,7 @@ Does not use threads
     Command line parameters that will be passed directly to rseqc infer_exerpiment.py
 
     Possible command include::
-    
+
         -s SAMPLE_SIZE, --sample-size=SAMPLE_SIZE
             Number of reads sampled from BAM [200000].
         -q MAP_QUAL, --mapq=MAP_QUAL

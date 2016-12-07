@@ -12,9 +12,9 @@ log = snakemake.log_fmt_shell()
 
 
 shell(
-    'infer_experiment '
+    'infer_experiment.py '
     '-i {snakemake.input.bam} '
     '-r {snakemake.input.bed} '
-    '{snakemake.params.extra} '
+    '{extra} '
     '> {snakemake.output[0]} '
     '{log}')
