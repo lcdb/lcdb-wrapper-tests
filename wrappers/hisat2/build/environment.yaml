@@ -3,4 +3,4 @@ channels:
 dependencies:
   - hisat2
   - pip:
-      - git+git://github.com/lcdb/lcdblib
+      - git+https://github.com/lcdb/lcdblib.git@master
