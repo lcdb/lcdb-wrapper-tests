@@ -9,7 +9,8 @@ def test_infer_experiment(sample1_se_bam, annotation_bed12, tmpdir):
                     input:
                         bam='sample1_R1.bam',
                         bed='dm6.bed12'
-                    output: 'sample1_R1.infer_experiment.txt'
+                    output: 
+                        txt = 'sample1_R1.infer_experiment.txt'
                     wrapper: "file://wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
