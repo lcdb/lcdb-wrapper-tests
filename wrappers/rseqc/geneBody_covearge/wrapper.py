@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from tempfile import mkdtemp
+from tempfile import NamedTemporaryFile
 from snakemake.shell import shell
 
 # All wrappers must be able to handle an optional params.extra.
@@ -19,19 +19,17 @@ elif hasattr(snakemake.input.bam, __iter__):
 else:
     raise ValueError("BAM must be a single file or a list of files.")
 
-# Make temp prefix
-temp = mkdtemp
-
-
 shell(
     'geneBody_coverage.py '
     '-i {bam} '
-    '-o {temp} '
+    '-o tmp '
     '-r {snakemake.input.bed} '
-    '{snakemake.params.extra} '
-    '{log}')
+    '{extra} '
+    '{log}'
+    )
 
 shell(
-    ''
-    '-o {snakemake.output[0]} '
-    '')
+    'mv tmp.geneBodyCoverage.r {snakemake.output.r} '
+    '&& mv tmp.geneBodyCoverage.txt {snakemake.output.txt} '
+    '&& mv tmp.geneBodyCoverage.curves.pdf {snakemake.output.pdf}'
+    )

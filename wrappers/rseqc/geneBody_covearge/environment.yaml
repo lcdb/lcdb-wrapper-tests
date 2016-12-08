@@ -1,6 +1,7 @@
 channels:
-  - bioconda
+    - bioconda
+    - r
 dependencies:
-  - rseqc >=2.6.2
-  - pip:
-      - git+https://github.com/lcdb/lcdblib.git@master
+    - rseqc >=2.6.2
+    - r-essentials
+    - icu >=56.1

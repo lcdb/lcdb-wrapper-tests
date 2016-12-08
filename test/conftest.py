@@ -67,13 +67,30 @@ def sample1_se_bam(tmpdir_factory):
     fn = 'samples/sample1/sample1.single.bam'
     return _download_file(fn, d)
 
+@pytest.fixture(scope='session')
+def sample1_se_sort_bam(sample1_se_bam):
+    sample1_se_sort_bam = sample1_se_bam.replace('.bam', '.sort.bam')
+    shell(
+            "samtools sort "
+            "-o {sample1_se_sort_bam} "
+            "-O BAM "
+            "{sample1_se_bam} "
+            )
+    return sample1_se_sort_bam
+
+@pytest.fixture(scope='session')
+def sample1_se_sort_bam_bai(sample1_se_sort_bam):
+    shell(
+            "samtools index "
+            "{sample1_se_sort_bam}"
+            )
+    return sample1_se_sort_bam + '.bai'
 
 @pytest.fixture(scope='session')
 def sample1_pe_bam(tmpdir_factory):
     d = tmpdir_for_func(tmpdir_factory)
     fn = 'samples/sample1/sample1.paired.bam'
     return _download_file(fn, d)
-
 
 @pytest.fixture(scope='session')
 def sample1_pe_hisat2_bam(tmpdir_factory):
