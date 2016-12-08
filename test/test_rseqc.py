@@ -9,7 +9,7 @@ def test_infer_experiment(sample1_se_bam, annotation_bed12, tmpdir):
                     input:
                         bam='sample1_R1.bam',
                         bed='dm6.bed12'
-                    output: 
+                    output:
                         txt = 'sample1_R1.infer_experiment.txt'
                     wrapper: "file://wrapper"
                 '''
@@ -78,7 +78,7 @@ def test_geneBody_cov(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_b
         # PDF
         assert os.path.exists('sample1_R1.geneBodyCoverage.pdf')
 
-    run(dpath('../wrappers/rseqc/geneBody_covearge'), snakefile, check, input_data_func, tmpdir, use_conda=True)
+    run(dpath('../wrappers/rseqc/geneBody_coverage'), snakefile, check, input_data_func, tmpdir, use_conda=True)
 
 
 def test_gB_cov_png(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed12, tmpdir):
@@ -88,7 +88,7 @@ def test_gB_cov_png(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed
                         bam='sample1_R1.sort.bam',
                         bai='sample1_R1.sort.bam.bai',
                         bed='dm6.bed12'
-                    output: 
+                    output:
                         txt='sample1_R1.geneBodyCoverage.txt',
                         r='sample1_R1.geneBodyCoverage.r',
                         img='sample1_R1.geneBodyCoverage.png',
