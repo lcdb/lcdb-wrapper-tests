@@ -16,5 +16,5 @@ shell(
     '-i {snakemake.input.bam} '
     '-r {snakemake.input.bed} '
     '{extra} '
-    '> {snakemake.output[0]} '
+    '> {snakemake.output.txt} '
     '{log}')
