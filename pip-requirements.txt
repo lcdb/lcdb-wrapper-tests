@@ -1,5 +1,5 @@
+# pip install lcdblib until we get it in conda
 git+https://github.com/lcdb/lcdblib.git@master
 
-# pip install snakemake until the bioconda build finishes
-snakemake==3.9
-
+# pip install snakemake master until there is a new release on bioconda
+git+https://bitbucket.org/snakemake/snakemake.git@master
