@@ -3,7 +3,7 @@ import gzip
 from utils import run, dpath, rm, symlink_in_tempdir
 from textwrap import dedent
 
-def test_infer_experiment(sample1_se_bam, annotation_bed12, tmpdir):
+def test_infer_experiment(sample1_se_sort_bam, annotation_bed12, tmpdir):
     snakefile = '''
                 rule infer_experiment:
                     input:
@@ -79,3 +79,40 @@ def test_geneBody_cov(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_b
 
     run(dpath('../wrappers/rseqc/geneBody_covearge'), snakefile, check, input_data_func, tmpdir, use_conda=True)
 
+def test_tin(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed12, tmpdir):
+    snakefile = '''
+                rule tin:
+                    input:
+                        bam='sample1_R1.sort.bam',
+                        bai='sample1_R1.sort.bam.bai',
+                        bed='dm6.bed12'
+                    output: table='sample1_R1.tin.tsv',
+                            summary='sample1_R1.tin.summary.txt'
+                    wrapper: "file://wrapper"
+                '''
+    input_data_func=symlink_in_tempdir(
+        {
+            sample1_se_sort_bam: 'sample1_R1.sort.bam',
+            sample1_se_sort_bam_bai: 'sample1_R1.sort.bam.bai',
+            annotation_bed12: 'dm6.bed12'
+        }
+    )
+
+    def check():
+        """
+        check for line lengths and that they are at least different sized
+        """
+
+        # R code
+        with open('sample1_R1.tin.tsv', 'r') as handle:
+            result = handle.readline().strip().split('\t')
+
+        assert  result == ['geneID', 'chrom', 'tx_start', 'tx_end', 'TIN']
+
+        # text
+        with open('sample1_R1.tin.summary.txt', 'r') as handle:
+            result = handle.readline().strip().split('\t')
+
+        assert  result == ['Bam_file', 'TIN(mean)', 'TIN(median)', 'TIN(stdev)']
+
+    run(dpath('../wrappers/rseqc/tin'), snakefile, check, input_data_func, tmpdir, use_conda=True)
