@@ -1,17 +1,31 @@
 # rseqc Infer Experiment
 
-[website](http://rseqc.sourceforge.net/#infer-experiment-py)
+[website](http://rseqc.sourceforge.net/#bam-stat-py)
 
 ## Examples
 
-Minimal usage:
+### Minimal usage:
 
 ```python
-rule infer_experiment:
-    input: bam = 'a.bam',
-           bed = 'b.bed'
-    output: 'b.txt'
-    log: 'a.infer_experiment.log'
+rule bam_stat:
+    input: 
+        bam = 'sample1.bam'
+    output: 
+        txt='sample1.bam_stat.txt'
+    wrapper:
+        'file://path/to/wrapper'
+```
+
+### Extra Arguments:
+
+```python
+rule bam_stat:
+    input: 
+        bam = 'sample1.bam'
+    output: 
+        txt='sample1.bam_stat.txt'
+    params:
+        extra='-q 20'
     wrapper:
         'file://path/to/wrapper'
 ```
@@ -21,28 +35,18 @@ rule infer_experiment:
 `bam`:
     Input alignment file in BAM format.
 
-`bed`:
-    Reference gene model in bed format.
-
 ## Output
 
-Output files are simply copies of input.
-
-### Single-end mode:
-
-Expects a single unnamed output file
+`txt`: 
+    Text file containing basic stats.
 
 ## Threads
 Does not use threads
 
 ## Params
 `extra`:
-    Command line parameters that will be passed directly to rseqc infer_exerpiment.py
+    Command line parameters that will be passed directly to rseqc bam_stat.py.
+    See website for possible options.
 
-    Possible command include::
-
-        -s SAMPLE_SIZE, --sample-size=SAMPLE_SIZE
-            Number of reads sampled from BAM [200000].
-        -q MAP_QUAL, --mapq=MAP_QUAL
-            Minimum mapping quality (phred scaled) for an alignment to be considered [30].
-
+## Log
+Cannot use log, bam_stat.py writes output to STDERR which is captured in the output.txt option.
