@@ -1,17 +1,39 @@
 # rseqc Infer Experiment
 
-[website](http://rseqc.sourceforge.net/#infer-experiment-py)
+[website](http://rseqc.sourceforge.net/#tin-py)
 
 ## Examples
 
-Minimal usage:
+### Minimal usage:
 
 ```python
-rule infer_experiment:
-    input: bam = 'a.bam',
-           bed = 'b.bed'
-    output: 'b.txt'
-    log: 'a.infer_experiment.log'
+rule tin:
+    input:
+        bam='sample1.sort.bam',
+        bai='sample1.sort.bam.bai',
+        bed='dm6.bed12'
+    output: 
+        table='sample1.tin.tsv',
+        summary='sample1.tin.summary.txt'
+    log: 'sample1.tin.log'
+    wrapper:
+        'file://path/to/wrapper'
+```
+
+### Additional Arguments:
+
+```python
+rule tin:
+    input:
+        bam='sample1.sort.bam',
+        bai='sample1.sort.bam.bai',
+        bed='dm6.bed12'
+    output: 
+        table='sample1.tin.tsv',
+        summary='sample1.tin.summary.txt'
+    params:
+        extra = '--subtract-background'
+    log: 'sample1.tin.log'
     wrapper:
         'file://path/to/wrapper'
 ```
@@ -19,30 +41,27 @@ rule infer_experiment:
 ## Input
 
 `bam`:
-    Input alignment file in BAM format.
+    Input alignment file in sorted BAM format.
+
+`bai`:
+    Samtools index of BAM file.
 
 `bed`:
     Reference gene model in bed format.
 
 ## Output
 
-Output files are simply copies of input.
+`table`:
+    TSV of results
 
-### Single-end mode:
-
-Expects a single unnamed output file
+`summary`:
+    Summary of results
 
 ## Threads
 Does not use threads
 
 ## Params
 `extra`:
-    Command line parameters that will be passed directly to rseqc infer_exerpiment.py
-
-    Possible command include::
-
-        -s SAMPLE_SIZE, --sample-size=SAMPLE_SIZE
-            Number of reads sampled from BAM [200000].
-        -q MAP_QUAL, --mapq=MAP_QUAL
-            Minimum mapping quality (phred scaled) for an alignment to be considered [30].
+    Command line parameters that will be passed directly to rseqc tin.py.
+    See website for possible options.
 
