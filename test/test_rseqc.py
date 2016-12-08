@@ -3,7 +3,7 @@ import gzip
 from utils import run, dpath, rm, symlink_in_tempdir
 from textwrap import dedent
 
-def test_infer_experiment(sample1_se_sort_bam, annotation_bed12, tmpdir):
+def test_infer_experiment(sample1_se_bam, annotation_bed12, tmpdir):
     snakefile = '''
                 rule infer_experiment:
                     input:
@@ -116,3 +116,32 @@ def test_tin(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed12, tmp
         assert  result == ['Bam_file', 'TIN(mean)', 'TIN(median)', 'TIN(stdev)']
 
     run(dpath('../wrappers/rseqc/tin'), snakefile, check, input_data_func, tmpdir, use_conda=True)
+
+
+def test_bam_stat(sample1_se_bam, tmpdir):
+    snakefile = '''
+                rule bam_stat:
+                    input:
+                        bam='sample1_R1.bam'
+                    output: txt='sample1_R1.bam_stat.txt'
+                    wrapper: "file://wrapper"
+                '''
+    input_data_func=symlink_in_tempdir(
+        {
+            sample1_se_bam: 'sample1_R1.bam',
+        }
+    )
+
+    def check():
+        """
+        check for line lengths and that they are at least different sized
+        """
+        with open('sample1_R1.bam_stat.txt', 'r') as handle:
+            results = handle.readlines()
+
+        assert  results[0] == 'Load BAM file ...  Done\n'
+        assert results[-1] == 'Proper-paired reads map to different chrom:0\n'
+
+    run(dpath('../wrappers/rseqc/bam_stat'), snakefile, check, input_data_func, tmpdir, use_conda=True)
+
+
