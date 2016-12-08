@@ -46,7 +46,7 @@ def test_geneBody_cov(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_b
                         bed='dm6.bed12'
                     output: txt='sample1_R1.geneBodyCoverage.txt',
                             r='sample1_R1.geneBodyCoverage.r',
-                            pdf='sample1_R1.geneBodyCoverage.pdf',
+                            img='sample1_R1.geneBodyCoverage.pdf',
                     wrapper: "file://wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
@@ -78,6 +78,35 @@ def test_geneBody_cov(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_b
         assert os.path.exists('sample1_R1.geneBodyCoverage.pdf')
 
     run(dpath('../wrappers/rseqc/geneBody_covearge'), snakefile, check, input_data_func, tmpdir, use_conda=True)
+
+
+def test_gB_cov_png(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed12, tmpdir):
+    snakefile = '''
+                rule geneBody_coverage:
+                    input:
+                        bam='sample1_R1.sort.bam',
+                        bai='sample1_R1.sort.bam.bai',
+                        bed='dm6.bed12'
+                    output: 
+                        txt='sample1_R1.geneBodyCoverage.txt',
+                        r='sample1_R1.geneBodyCoverage.r',
+                        img='sample1_R1.geneBodyCoverage.png',
+                    params:
+                        extra: = '-f png'
+                    wrapper: "file://wrapper"
+                '''
+    input_data_func=symlink_in_tempdir(
+        {
+            sample1_se_sort_bam: 'sample1_R1.sort.bam',
+            sample1_se_sort_bam_bai: 'sample1_R1.sort.bam.bai',
+            annotation_bed12: 'dm6.bed12'
+        }
+    )
+
+    def check():
+        """ Check that the PNG is created """
+        assert os.path.exists('sample1_R1.geneBodyCoverage.png')
+
 
 def test_tin(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed12, tmpdir):
     snakefile = '''
@@ -143,5 +172,4 @@ def test_bam_stat(sample1_se_bam, tmpdir):
         assert results[-1] == 'Proper-paired reads map to different chrom:0\n'
 
     run(dpath('../wrappers/rseqc/bam_stat'), snakefile, check, input_data_func, tmpdir, use_conda=True)
-
 
