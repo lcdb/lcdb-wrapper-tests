@@ -1,7 +1,8 @@
 channels:
-    - bioconda
-    - r
+  - bioconda
+  - r
+  - conda-forge
 dependencies:
-    - rseqc >=2.6.2
-    - r-essentials
-    - icu >=56.1
+  - rseqc >=2.6.2
+  - r-essentials
+  - icu >=56.1
