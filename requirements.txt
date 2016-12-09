@@ -16,3 +16,5 @@ picard >=2.5.0
 r >=3.3.1
 bowtie2 >=2.2.8
 multiqc >=0.8
+gffutils >=0.8.7.1
+pybedtools >=0.7.8

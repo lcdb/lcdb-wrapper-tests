@@ -67,13 +67,30 @@ def sample1_se_bam(tmpdir_factory):
     fn = 'samples/sample1/sample1.single.bam'
     return _download_file(fn, d)
 
+@pytest.fixture(scope='session')
+def sample1_se_sort_bam(sample1_se_bam):
+    sample1_se_sort_bam = sample1_se_bam.replace('.bam', '.sort.bam')
+    shell(
+            "samtools sort "
+            "-o {sample1_se_sort_bam} "
+            "-O BAM "
+            "{sample1_se_bam} "
+            )
+    return sample1_se_sort_bam
+
+@pytest.fixture(scope='session')
+def sample1_se_sort_bam_bai(sample1_se_sort_bam):
+    shell(
+            "samtools index "
+            "{sample1_se_sort_bam}"
+            )
+    return sample1_se_sort_bam + '.bai'
 
 @pytest.fixture(scope='session')
 def sample1_pe_bam(tmpdir_factory):
     d = tmpdir_for_func(tmpdir_factory)
     fn = 'samples/sample1/sample1.paired.bam'
     return _download_file(fn, d)
-
 
 @pytest.fixture(scope='session')
 def sample1_pe_hisat2_bam(tmpdir_factory):
@@ -132,6 +149,33 @@ def annotation_refflat(tmpdir_factory):
     fn = 'annotation/dm6.refflat'
     d = tmpdir_for_func(tmpdir_factory)
     return _download_file(fn, d)
+
+
+@pytest.fixture(scope='session')
+def annotation_db(annotation):
+    import gffutils
+    gffutils.create_db(data=annotation, dbfn=annotation + '.db',
+            merge_strategy='merge',
+            id_spec={'transcript': ['transcript_id', 'transcript_symbol'],
+                     'gene': ['gene_id', 'gene_symbol']},
+            gtf_transcript_key='transcript_id',
+            gtf_gene_key='gene_id')
+
+    return annotation + '.db'
+
+
+@pytest.fixture(scope='session')
+def annotation_bed12(annotation_db):
+    import gffutils
+    db = gffutils.FeatureDB(annotation_db)
+
+    bed12 = '.'.join(annotation_db.strip().split('.')[:-2]) + '.bed12'
+
+    with open(bed12, 'w') as handle:
+        for t in db.features_of_type('transcript'):
+            handle.write(db.bed12(t, name_field='transcript_id') + '\n')
+
+    return bed12
 
 
 @pytest.fixture(scope='session')
