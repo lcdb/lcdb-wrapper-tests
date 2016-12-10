@@ -2,5 +2,3 @@ channels:
   - bioconda
 dependencies:
   - multiqc
-  - pip:
-      - git+https://github.com/lcdb/lcdblib.git@master
