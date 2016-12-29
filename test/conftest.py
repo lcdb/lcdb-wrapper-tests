@@ -36,6 +36,34 @@ def _download_file(fn, d):
 
 
 @pytest.fixture(scope='session')
+def transcriptome(tmpdir_factory):
+    d = tmpdir_for_func(tmpdir_factory)
+    fn = 'seq/transcriptome.fa'
+    return _download_file(fn, d)
+
+
+@pytest.fixture(scope='session')
+def kallisto_index(tmpdir_factory, transcriptome):
+    d = tmpdir_for_func(tmpdir_factory)
+    snakefile = '''
+    rule kallisto:
+        input: fasta='transcriptome.fa'
+        output: index='transcriptome.idx'
+        wrapper: 'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            transcriptome: 'transcriptome.fa',
+        }
+    )
+
+    run(
+        dpath('../wrappers/kallisto/index'),
+        snakefile, None, input_data_func, d)
+    return os.path.join(d, 'transcriptome.idx')
+
+
+@pytest.fixture(scope='session')
 def sample1_se_fq(tmpdir_factory):
     d = tmpdir_for_func(tmpdir_factory)
     fn = 'samples/sample1/sample1_R1.fastq.gz'
