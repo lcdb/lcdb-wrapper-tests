@@ -1,21 +1,6 @@
-cutadapt == 1.9.1
-fastqc == 0.11.5
-snakemake == 3.8.2
-hisat2 == 2.0.5
-pytest >= 2.9.2
-pandas >= 0.18.1
-seaborn >= 0.7.0
-matplotlib >= 1.5.1
-ipython >=5.1.0
-jsonschema >=2.5.1
-pyyaml >=3.11
-samtools >=1.3
-pysam >=0.9.1
-subread >=1.5.0
-picard >=2.5.0
-r >=3.3.1
-bowtie2 >=2.2.8
-multiqc >=0.8
-gffutils >=0.8.7.1
-pybedtools >=0.7.8
-kallisto >=0.43.0
+# only put tools that are needed for tests (e.g., `bowtie-build` is needed to make sure
+# that bowtie-index worked), not for the wrappers themselves, which should have
+# their own environment.yml files.
+bowtie2
+hisat2
+samtools
