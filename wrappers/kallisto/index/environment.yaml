@@ -1,6 +1,4 @@
 channels:
   - bioconda
-  - lcdb
 dependencies:
-  - bowtie2
-  - lcdblib
+  - kallisto

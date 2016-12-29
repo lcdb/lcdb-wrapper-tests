@@ -5,19 +5,24 @@ __license__ = "MIT"
 
 import os
 from snakemake.shell import shell
+from lcdblib.utils import utils
+
 outdir = os.path.dirname(snakemake.output[0])
 if not outdir:
     outdir = '.'
 
 extra = snakemake.params.get('extra', "")
 log = snakemake.log_fmt_shell()
-shell(
-    'multiqc '
-    '--quiet '
-    '--outdir {outdir} '
-    '--force '
-    '--filename {snakemake.output} '
-    '{extra} '
-    '{snakemake.params.analysis_directory} '
-    '{log}'
-)
+
+# MultiQC uses Click, which in turn complains if C.UTF-8 is not set
+with utils.temp_env(dict(LC_ALL='C.UTF-8', LC_LANG='C.UTF-8')) as env:
+    shell(
+        'multiqc '
+        '--quiet '
+        '--outdir {outdir} '
+        '--force '
+        '--filename {snakemake.output} '
+        '{extra} '
+        '{snakemake.params.analysis_directory} '
+        '{log}'
+    )
