@@ -4,6 +4,7 @@
 bowtie2
 hisat2
 lcdblib
+pysam
 pytest >=2.9.2
 samtools
 snakemake
