@@ -1,4 +1,6 @@
 channels:
   - bioconda
+  - lcdb
 dependencies:
   - multiqc
+  - lcdblib
