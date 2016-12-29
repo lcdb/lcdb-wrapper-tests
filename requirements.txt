@@ -18,3 +18,4 @@ bowtie2 >=2.2.8
 multiqc >=0.8
 gffutils >=0.8.7.1
 pybedtools >=0.7.8
+kallisto >=0.43.0
