@@ -2,6 +2,7 @@
 # that bowtie-index worked), not for the wrappers themselves, which should have
 # their own environment.yml files.
 bowtie2
+gffutils
 hisat2
 lcdblib
 pysam
