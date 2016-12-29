@@ -144,12 +144,9 @@ def hisat2_indexes(dm6_fa, tmpdir_factory):
         }
     )
 
-    def check():
-        pass
-
     run(
         dpath('../wrappers/hisat2/build'),
-        snakefile, check, input_data_func, d)
+        snakefile, None, input_data_func, d)
     return aligners.hisat2_index_from_prefix(os.path.join(d, '2L'))
 
 
@@ -168,12 +165,9 @@ def bowtie2_indexes(dm6_fa, tmpdir_factory):
         }
     )
 
-    def check():
-        pass
-
     run(
         dpath('../wrappers/bowtie2/build'),
-        snakefile, check, input_data_func, d)
+        snakefile, None, input_data_func, d)
     return aligners.bowtie2_index_from_prefix(os.path.join(d, '2L'))
 
 
