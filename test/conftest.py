@@ -97,15 +97,22 @@ def sample1_se_bam(tmpdir_factory):
 
 
 @pytest.fixture(scope='session')
-def sample1_se_sort_bam(sample1_se_bam):
-    sample1_se_sort_bam = sample1_se_bam.replace('.bam', '.sort.bam')
-    shell(
-            "samtools sort "
-            "-o {sample1_se_sort_bam} "
-            "-O BAM "
-            "{sample1_se_bam} "
-            )
-    return sample1_se_sort_bam
+def sample1_se_sort_bam(sample1_se_bam, tmpdir_factory):
+    snakefile = '''
+    rule sort:
+        input: bam='sample1.bam'
+        output: bam='sample1.sorted.bam'
+        wrapper: 'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            sample1_se_bam: 'sample1.bam'
+
+        }
+    )
+    tmpdir = str(tmpdir_factory.mktemp('sample1_se_sort_bam'))
+    run(dpath('../wrappers/samtools/sort'), snakefile, None, input_data_func, tmpdir)
+    return os.path.join(tmpdir, 'sample1.sorted.bam')
 
 
 @pytest.fixture(scope='session')
