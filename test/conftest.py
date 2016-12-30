@@ -238,3 +238,28 @@ def fastqc(sample1_se_fq, tmpdir_factory):
     tmpdir = str(tmpdir_factory.mktemp('fastqc_fixture'))
     run(dpath('../wrappers/fastqc'), snakefile, None, input_data_func, tmpdir)
     return os.path.join(tmpdir, 'sample1_R1_fastqc.zip')
+
+
+@pytest.fixture(scope='session')
+def sample1_se_bam_sorted_markdups(sample1_se_sort_bam, tmpdir_factory):
+    snakefile = '''
+    rule markduplicates:
+        input:
+            bam='sample1.bam'
+        output:
+            bam='sample1.dupsmarked.bam',
+            metrics='sample1.dupmetrics.txt'
+        log: 'log'
+        wrapper: 'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            sample1_se_sort_bam: 'sample1.bam',
+        }
+    )
+    tmpdir = str(tmpdir_factory.mktemp('markduplicates_fixture'))
+    run(dpath('../wrappers/picard/markduplicates'), snakefile, None, input_data_func, tmpdir)
+    return {
+            'bam': os.path.join(tmpdir, 'sample1.dupsmarked.bam'),
+            'metrics': os.path.join(tmpdir, 'sample1.dupmetrics.txt')
+            }
