@@ -53,7 +53,7 @@ def test_geneBody_cov(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_b
     input_data_func=symlink_in_tempdir(
         {
             sample1_se_sort_bam: 'sample1_R1.sort.bam',
-            sample1_se_sort_bam_bai: 'sample1_R1.sort.bam.bai',
+            sample1_se_sort_bam_bai['bai']: 'sample1_R1.sort.bam.bai',
             annotation_bed12: 'dm6.bed12'
         }
     )
@@ -99,7 +99,7 @@ def test_gB_cov_png(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed
     input_data_func=symlink_in_tempdir(
         {
             sample1_se_sort_bam: 'sample1_R1.sort.bam',
-            sample1_se_sort_bam_bai: 'sample1_R1.sort.bam.bai',
+            sample1_se_sort_bam_bai['bai']: 'sample1_R1.sort.bam.bai',
             annotation_bed12: 'dm6.bed12'
         }
     )
@@ -123,7 +123,7 @@ def test_tin(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed12, tmp
     input_data_func=symlink_in_tempdir(
         {
             sample1_se_sort_bam: 'sample1_R1.sort.bam',
-            sample1_se_sort_bam_bai: 'sample1_R1.sort.bam.bai',
+            sample1_se_sort_bam_bai['bai']: 'sample1_R1.sort.bam.bai',
             annotation_bed12: 'dm6.bed12'
         }
     )

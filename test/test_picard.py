@@ -4,6 +4,10 @@ import gzip
 from utils import run, dpath, rm, symlink_in_tempdir
 
 
+def test_markduplicates_se(sample1_se_bam_sorted_markdups, tmpdir):
+    assert open(sample1_se_bam_sorted_markdups['metrics']).readline().startswith('##')
+
+
 def test_picard_collectrnaseqmetrics_se(sample1_se_bam, annotation_refflat, tmpdir):
     snakefile = '''
     rule collectrnaseqmetrics:

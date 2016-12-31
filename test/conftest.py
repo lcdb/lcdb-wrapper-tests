@@ -97,25 +97,47 @@ def sample1_se_bam(tmpdir_factory):
 
 
 @pytest.fixture(scope='session')
-def sample1_se_sort_bam(sample1_se_bam):
-    sample1_se_sort_bam = sample1_se_bam.replace('.bam', '.sort.bam')
-    shell(
-            "samtools sort "
-            "-o {sample1_se_sort_bam} "
-            "-O BAM "
-            "{sample1_se_bam} "
-            )
-    return sample1_se_sort_bam
+def sample1_se_sort_bam(sample1_se_bam, tmpdir_factory):
+    snakefile = '''
+    rule sort:
+        input: bam='sample1.bam'
+        output: bam='sample1.sorted.bam'
+        wrapper: 'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            sample1_se_bam: 'sample1.bam'
+
+        }
+    )
+    tmpdir = str(tmpdir_factory.mktemp('sample1_se_sort_bam'))
+    run(dpath('../wrappers/samtools/sort'), snakefile, None, input_data_func, tmpdir)
+    return os.path.join(tmpdir, 'sample1.sorted.bam')
 
 
 @pytest.fixture(scope='session')
-def sample1_se_sort_bam_bai(sample1_se_sort_bam):
-    shell(
-            "samtools index "
-            "{sample1_se_sort_bam}"
-            )
-    return sample1_se_sort_bam + '.bai'
+def sample1_se_sort_bam_bai(sample1_se_sort_bam, tmpdir_factory):
+    """
+    Returns both the bam and the bam.bai
+    """
+    snakefile = '''
+    rule index:
+        input: bam='sample1.sorted.bam'
+        output: bai='sample1.sorted.bam.bai'
+        wrapper: 'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            sample1_se_sort_bam: 'sample1.sorted.bam'
 
+        }
+    )
+    tmpdir = str(tmpdir_factory.mktemp('sample1_se_sort_bam_bai'))
+    run(dpath('../wrappers/samtools/index'), snakefile, None, input_data_func, tmpdir)
+    return {
+            'bam': os.path.join(tmpdir, 'sample1.sorted.bam'),
+            'bai': os.path.join(tmpdir, 'sample1.sorted.bam.bai'),
+    }
 
 @pytest.fixture(scope='session')
 def sample1_pe_bam(tmpdir_factory):
@@ -231,3 +253,66 @@ def fastqc(sample1_se_fq, tmpdir_factory):
     tmpdir = str(tmpdir_factory.mktemp('fastqc_fixture'))
     run(dpath('../wrappers/fastqc'), snakefile, None, input_data_func, tmpdir)
     return os.path.join(tmpdir, 'sample1_R1_fastqc.zip')
+
+
+@pytest.fixture(scope='session')
+def sample1_se_bam_sorted_markdups(sample1_se_sort_bam, tmpdir_factory):
+    snakefile = '''
+    rule markduplicates:
+        input:
+            bam='sample1.bam'
+        output:
+            bam='sample1.dupsmarked.bam',
+            metrics='sample1.dupmetrics.txt'
+        log: 'log'
+        wrapper: 'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            sample1_se_sort_bam: 'sample1.bam',
+        }
+    )
+    tmpdir = str(tmpdir_factory.mktemp('markduplicates_fixture'))
+    run(dpath('../wrappers/picard/markduplicates'), snakefile, None, input_data_func, tmpdir)
+    return {
+            'bam': os.path.join(tmpdir, 'sample1.dupsmarked.bam'),
+            'metrics': os.path.join(tmpdir, 'sample1.dupmetrics.txt')
+            }
+
+
+@pytest.fixture(scope='session')
+def sample1_se_dupradar(sample1_se_bam_sorted_markdups, annotation, tmpdir_factory):
+    snakefile = '''
+    rule dupradar:
+        input:
+            bam='sample1.bam',
+            annotation='dm6.gtf'
+        output:
+            density_scatter='sample1.density_scatter.png',
+            expression_histogram='sample1.expression_histogram.png',
+            expression_barplot='sample1.expression_barplot.png',
+            expression_boxplot='sample1.expression_boxplot.png',
+            multimapping_histogram='sample1.multimapping_histogram.png',
+            dataframe='sample1.dupradar.tsv'
+        wrapper:
+            'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            sample1_se_bam_sorted_markdups['bam']: 'sample1.bam',
+            annotation: 'dm6.gtf',
+        }
+    )
+    tmpdir = str(tmpdir_factory.mktemp('dupradar_fixture'))
+    run(dpath('../wrappers/dupradar'), snakefile, None, input_data_func, tmpdir)
+    mapping = dict(
+        density_scatter='sample1.density_scatter.png',
+        expression_histogram='sample1.expression_histogram.png',
+        expression_barplot='sample1.expression_barplot.png',
+        expression_boxplot='sample1.expression_boxplot.png',
+        multimapping_histogram='sample1.multimapping_histogram.png',
+        dataframe='sample1.dupradar.tsv',
+    )
+    for k, v in mapping.items():
+        mapping[k] = os.path.join(tmpdir, v)
+    return mapping
