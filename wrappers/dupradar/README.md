@@ -17,10 +17,15 @@ Single-end, not stranded:
 ```python
 rule dupRadar:
     input:
-       bam='{sample_dir}/{sample}/{sample}.cutadapt.hisat2.unique.sort.dedup.bam',
-       annotation='annotations/dm6.gtf',
+       bam='sample1.bam',
+       annotation='dm6.gtf',
     output:
-        png='{sample_dir}/{sample}/{sample}_dupRadar_drescatter.png'
+        density_scatter='sample1.density_scatter.png',
+        expression_histogram='sample1.expression_histogram.png',
+        expression_boxplot='sample1.expression_boxplot.png',
+        expression_barplot='sample1.expression_barplot.png',
+        multimapping_histogram='sample1.multimapping_histogram.png',
+        dataframe='sample1.dupradar.tsv'
     wrapper:
         wrapper_for('dupRadar')
 ```
@@ -33,7 +38,11 @@ rule dupRadar:
        bam='{sample_dir}/{sample}/{sample}.cutadapt.hisat2.unique.sort.dedup.bam',
        annotation='annotations/dm6.gtf',
     output:
-        png='{sample_dir}/{sample}/{sample}_dupRadar_drescatter.png'
+        density_scatter='sample1.density_scatter.png',
+        expression_histogram='sample1.expression_histogram.png',
+        expression_boxplot='sample1.expression_boxplot.png',
+        expression_barplot='sample1.expression_barplot.png',
+        dataframe='sample1.dupradar.tsv'
     params:
         paired=True,
         stranded=True
@@ -49,10 +58,23 @@ rule dupRadar:
   features.
 
 ## Output
-* `png`: an expression density scatter plot in .png format is generated
+Output plots are described in the [dupRadar
+vignette)[http://bioconductor.org/packages/release/bioc/vignettes/dupRadar/inst/doc/dupRadar.html].
+See that page for descriptions of outputs and how to interpret them.
+
+* `density_scatter`: expression vs percent duplication
+* `expression_boxplot`: expression vs percent duplication, binned into boxes
+* `expression_histogram`: standard histogram of expression (RPKM)
+* `expression_barplot`: percentage duplication in 5% expression bins.
+* `multimapping_histogram`: histogram showing fraction of reads coming from
+  multimapping reads
+* `dataframe`: results from `analyzeDuprates` saved as a TSV for downstream
+  analysis. Following the vignette, we also add the fraction of multimappers in
+  each gene as the column `mhRate`.
 
 ## Threads
-Threads are passed to dupRadar.
+Threads are passed to dupRadar and are in turn passed to featureCounts, which
+it calls automatically.
 
 ## Params
 * `paired`: True | False. Default False.
