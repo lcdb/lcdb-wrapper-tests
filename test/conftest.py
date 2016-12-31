@@ -116,13 +116,28 @@ def sample1_se_sort_bam(sample1_se_bam, tmpdir_factory):
 
 
 @pytest.fixture(scope='session')
-def sample1_se_sort_bam_bai(sample1_se_sort_bam):
-    shell(
-            "samtools index "
-            "{sample1_se_sort_bam}"
-            )
-    return sample1_se_sort_bam + '.bai'
+def sample1_se_sort_bam_bai(sample1_se_sort_bam, tmpdir_factory):
+    """
+    Returns both the bam and the bam.bai
+    """
+    snakefile = '''
+    rule index:
+        input: bam='sample1.sorted.bam'
+        output: bai='sample1.sorted.bam.bai'
+        wrapper: 'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            sample1_se_sort_bam: 'sample1.sorted.bam'
 
+        }
+    )
+    tmpdir = str(tmpdir_factory.mktemp('sample1_se_sort_bam_bai'))
+    run(dpath('../wrappers/samtools/index'), snakefile, None, input_data_func, tmpdir)
+    return {
+            'bam': os.path.join(tmpdir, 'sample1.sorted.bam'),
+            'bai': os.path.join(tmpdir, 'sample1.sorted.bam.bai'),
+    }
 
 @pytest.fixture(scope='session')
 def sample1_pe_bam(tmpdir_factory):
