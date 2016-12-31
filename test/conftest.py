@@ -278,3 +278,41 @@ def sample1_se_bam_sorted_markdups(sample1_se_sort_bam, tmpdir_factory):
             'bam': os.path.join(tmpdir, 'sample1.dupsmarked.bam'),
             'metrics': os.path.join(tmpdir, 'sample1.dupmetrics.txt')
             }
+
+
+@pytest.fixture(scope='session')
+def sample1_se_dupradar(sample1_se_bam_sorted_markdups, annotation, tmpdir_factory):
+    snakefile = '''
+    rule dupradar:
+        input:
+            bam='sample1.bam',
+            annotation='dm6.gtf'
+        output:
+            density_scatter='sample1.density_scatter.png',
+            expression_histogram='sample1.expression_histogram.png',
+            expression_barplot='sample1.expression_barplot.png',
+            expression_boxplot='sample1.expression_boxplot.png',
+            multimapping_histogram='sample1.multimapping_histogram.png',
+            dataframe='sample1.dupradar.tsv'
+        wrapper:
+            'file://wrapper'
+    '''
+    input_data_func = symlink_in_tempdir(
+        {
+            sample1_se_bam_sorted_markdups['bam']: 'sample1.bam',
+            annotation: 'dm6.gtf',
+        }
+    )
+    tmpdir = str(tmpdir_factory.mktemp('dupradar_fixture'))
+    run(dpath('../wrappers/dupradar'), snakefile, None, input_data_func, tmpdir)
+    mapping = dict(
+        density_scatter='sample1.density_scatter.png',
+        expression_histogram='sample1.expression_histogram.png',
+        expression_barplot='sample1.expression_barplot.png',
+        expression_boxplot='sample1.expression_boxplot.png',
+        multimapping_histogram='sample1.multimapping_histogram.png',
+        dataframe='sample1.dupradar.tsv',
+    )
+    for k, v in mapping.items():
+        mapping[k] = os.path.join(tmpdir, v)
+    return mapping
