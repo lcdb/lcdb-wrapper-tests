@@ -1,0 +1,7 @@
+channels:
+  - bioconda
+  - defaults
+dependencies:
+  - samtools==1.3
+  - preseq>=2.0.2
+  - conda-forge::gsl=1.16

@@ -1,31 +1,35 @@
-# Wrapper for `preseq c_curve`
+# Wrapper for Preseq lc_extrap
 
-Preseq method that generates a complexity plot of the genome library based on observed data.
+Preseq method used to estimate the future yield of the genome library based on
+observed data.
 
-## Examples
-
-Single-end mode
+## Example
 
 ```python
-rule preseq_ccurve:
+rule preseq_lcextrap:
     input:
         bam='{sample}.sorted.bam'
     output:
-        txt='{sample}.complexity_output.txt'
+        txt='{sample}/future_yield.txt'
     wrapper:
         "file://path/to/wrapper"
 ```
 
 ## Input
+
 * `bam`: Coordinate-sorted BAM. If paired-end, include `-P` in params.extra to
   run in paired-end mode.
 
 ## Output
-* `txt`: Two-column text file displaying the *total reads* and a
-  corresponding number of *distinct reads*.
+
+* `txt`: four column text file displaying the *total reads*, the
+  *expected distinct* reads and its corresponding *lower/upper 95% Confidence
+  Interval*
 
 ## Threads
+
 Threads not supported.
 
 ## Params
+
 * `extra`: passed verbatim; include `-P` to run in paired-end mode.
