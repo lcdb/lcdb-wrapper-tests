@@ -1,5 +1,5 @@
 __author__ = "Ryan Dale"
-__copyright__ = "Copyright 2016, Ryan Dale" 
+__copyright__ = "Copyright 2016, Ryan Dale"
 __email__ = "dalerr@niddk.nih.gov"
 __license__ = "MIT"
 
@@ -19,9 +19,12 @@ if snakemake.input.get('fastq', ''):
     # is a string.
     if isinstance(snakemake.input.fastq, str):
         fastqs = '-U {0} '.format(snakemake.input.fastq)
-    else:
-        assert len(snakemake.input.fastq) == 2
+    elif isinstance(snakemake.input.fastq, list) & (len(snakemake.input.fastq) == 1):
+        fastqs = '-U {0} '.format(snakemake.input.fastq[0])
+    elif isinstance(snakemake.input.fastq, list) & (len(snakemake.input.fastq) == 2):
         fastqs = '-1 {0} -2 {1} '.format(*snakemake.input.fastq)
+    else:
+        raise ValueError("You must provide a list of string to input.fastq")
 else:
     fastqs = ''
     try:
