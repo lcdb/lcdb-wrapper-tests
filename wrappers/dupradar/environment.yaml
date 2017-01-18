@@ -1,6 +1,8 @@
 channels:
   - bioconda
+  - r
   - lcdb
 dependencies:
   - bioconductor-dupradar
   - lcdblib
+  - ghostscript
