@@ -8,4 +8,4 @@ lcdblib
 pysam
 pytest >=2.9.2
 samtools
-snakemake
+snakemake==3.9.1
