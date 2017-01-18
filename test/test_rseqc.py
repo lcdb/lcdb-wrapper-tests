@@ -169,7 +169,7 @@ def test_bam_stat(sample1_se_bam, tmpdir):
         with open('sample1_R1.bam_stat.txt', 'r') as handle:
             results = handle.readlines()
 
-        assert  results[0] == 'Load BAM file ...  Done\n'
+        assert  results[5].split(':')[0] == 'Total records'
         assert results[-1] == 'Proper-paired reads map to different chrom:0\n'
 
     run(dpath('../wrappers/rseqc/bam_stat'), snakefile, check, input_data_func, tmpdir, use_conda=True)

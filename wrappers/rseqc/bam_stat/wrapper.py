@@ -5,10 +5,13 @@ from snakemake.shell import shell
 # All wrappers must be able to handle an optional params.extra.
 extra = snakemake.params.get('extra', '')
 
-# bam_stat prints the desired output to STDERR so don't log
+# This lets us handle whether to write to a log file or to write to stdout.
+# See snakemake.script.log_fmt_shell for details.
+log = snakemake.log_fmt_shell(stdout=False)
 
 shell(
     'bam_stat.py '
     '-i {snakemake.input.bam} '
     '{extra} '
-    '2> {snakemake.output.txt} ')
+    '> {snakemake.output.txt} '
+    '{log}')
