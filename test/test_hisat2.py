@@ -13,7 +13,7 @@ def test_hisat2_build(dm6_fa, tmpdir):
                     output:
                         index=expand('data/assembly/assembly.{n}.ht2', n=range(1,9))
                     log: 'hisat.log'
-                    wrapper: "file://wrapper"
+                    wrapper: "file:wrapper"
 
                 '''
     input_data_func=symlink_in_tempdir(
@@ -50,7 +50,7 @@ def test_hisat2_align_se(hisat2_indexes, sample1_se_fq, tmpdir):
             output:
                 bam='sample1.bam'
             log: "hisat2.log"
-            wrapper: "file://wrapper"
+            wrapper: "file:wrapper"
     '''.format(indexes=indexes)
     d[sample1_se_fq] = 'sample1_R1.fastq.gz'
     input_data_func = symlink_in_tempdir(d)
@@ -76,7 +76,7 @@ def test_hisat2_align_se_SRA(hisat2_indexes, tmpdir):
                 bam='sample1.bam'
             params: hisat2_extra='--sra-acc SRR1990338'
             log: "hisat2.log"
-            wrapper: "file://wrapper"
+            wrapper: "file:wrapper"
     '''.format(indexes=indexes)
     input_data_func = symlink_in_tempdir(d)
 
@@ -103,7 +103,7 @@ def test_hisat2_align_se_rm_unmapped(hisat2_indexes, sample1_se_fq, tmpdir):
             params:
                 samtools_view_extra='-F 0x04'
             log: "hisat2.log"
-            wrapper: "file://wrapper"
+            wrapper: "file:wrapper"
     '''.format(indexes=indexes)
     d[sample1_se_fq] = 'sample1_R1.fastq.gz'
     input_data_func = symlink_in_tempdir(d)

@@ -20,7 +20,7 @@ def test_picard_collectrnaseqmetrics_se(sample1_se_bam, annotation_refflat, tmpd
         params:
             extra="STRAND=NONE",
             java_args='-Xmx512m'
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func=symlink_in_tempdir(
         {
@@ -46,7 +46,7 @@ def test_picard_collectrnaseqmetrics_se_plot(sample1_se_bam, annotation_refflat,
             plot='sample1.pdf'
         log: 'log'
         params: extra="STRAND=NONE CHART=sample1.pdf"
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func=symlink_in_tempdir(
         {
@@ -76,7 +76,7 @@ def test_picard_collectrnaseqmetrics_too_small_heap(sample1_se_bam, annotation_r
         params:
             extra="STRAND=NONE",
             java_args='-Xmx128'
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func=symlink_in_tempdir(
         {

@@ -13,7 +13,7 @@ def test_bowtie2_build(dm6_fa, tmpdir):
                     output:
                         index=expand('data/assembly/assembly.{n}.bt2', n=range(1,5))
                     log: 'bowtie2.log'
-                    wrapper: "file://wrapper"
+                    wrapper: "file:wrapper"
 
                 '''
     input_data_func=symlink_in_tempdir(
@@ -50,7 +50,7 @@ def test_bowtie2_align_se(bowtie2_indexes, sample1_se_fq, tmpdir):
             output:
                 bam='sample1.bam'
             log: "bowtie2.log"
-            wrapper: "file://wrapper"
+            wrapper: "file:wrapper"
     '''.format(indexes=indexes)
     d[sample1_se_fq] = 'sample1_R1.fastq.gz'
     input_data_func = symlink_in_tempdir(d)
@@ -78,7 +78,7 @@ def test_bowtie2_align_se_rm_unmapped(bowtie2_indexes, sample1_se_fq, tmpdir):
             params:
                 samtools_view_extra='-F 0x04'
             log: "bowtie2.log"
-            wrapper: "file://wrapper"
+            wrapper: "file:wrapper"
     '''.format(indexes=indexes)
     d[sample1_se_fq] = 'sample1_R1.fastq.gz'
     input_data_func = symlink_in_tempdir(d)
