@@ -11,7 +11,7 @@ def test_featurecounts_se(sample1_se_bam, annotation, tmpdir):
                     output:
                         counts='sample1.counts',
                     log: 'featurecounts.log'
-                    wrapper: "file://wrapper"
+                    wrapper: "file:wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
         {
@@ -38,7 +38,7 @@ def test_featurecounts_pe(sample1_pe_bam, annotation, tmpdir):
                         counts='sample1.counts',
                     log: 'featurecounts.log'
                     params: extra='-p -P -s 1 -B --countSplitAlignmentsOnly'
-                    wrapper: "file://wrapper"
+                    wrapper: "file:wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
         {

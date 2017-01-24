@@ -49,7 +49,7 @@ def kallisto_index(tmpdir_factory, transcriptome):
     rule kallisto:
         input: fasta='transcriptome.fa'
         output: index='transcriptome.idx'
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func = symlink_in_tempdir(
         {
@@ -102,7 +102,7 @@ def sample1_se_sort_bam(sample1_se_bam, tmpdir_factory):
     rule sort:
         input: bam='sample1.bam'
         output: bam='sample1.sorted.bam'
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func = symlink_in_tempdir(
         {
@@ -124,7 +124,7 @@ def sample1_se_sort_bam_bai(sample1_se_sort_bam, tmpdir_factory):
     rule index:
         input: bam='sample1.sorted.bam'
         output: bai='sample1.sorted.bam.bai'
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func = symlink_in_tempdir(
         {
@@ -158,7 +158,7 @@ def hisat2_indexes(dm6_fa, tmpdir_factory):
     rule hisat2:
         input: fasta='2L.fa'
         output: index=['2L.1.ht2', '2L.2.ht2']
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func = symlink_in_tempdir(
         {
@@ -179,7 +179,7 @@ def bowtie2_indexes(dm6_fa, tmpdir_factory):
     rule bowtie2:
         input: fasta='2L.fa'
         output: index=['2L.1.bt2', '2L.2.bt2']
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func = symlink_in_tempdir(
         {
@@ -244,7 +244,7 @@ def fastqc(sample1_se_fq, tmpdir_factory):
         output:
             html='sample1_R1_fastqc.html',
             zip='sample1_R1_fastqc.zip'
-        wrapper: "file://wrapper"'''
+        wrapper: "file:wrapper"'''
     input_data_func = symlink_in_tempdir(
         {
             sample1_se_fq: 'sample1_R1.fastq.gz'
@@ -265,7 +265,7 @@ def sample1_se_bam_sorted_markdups(sample1_se_sort_bam, tmpdir_factory):
             bam='sample1.dupsmarked.bam',
             metrics='sample1.dupmetrics.txt'
         log: 'log'
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func = symlink_in_tempdir(
         {
@@ -295,7 +295,7 @@ def sample1_se_dupradar(sample1_se_bam_sorted_markdups, annotation, tmpdir_facto
             multimapping_histogram='sample1.multimapping_histogram.png',
             dataframe='sample1.dupradar.tsv'
         wrapper:
-            'file://wrapper'
+            'file:wrapper'
     '''
     input_data_func = symlink_in_tempdir(
         {

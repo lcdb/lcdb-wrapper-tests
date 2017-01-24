@@ -12,7 +12,7 @@ def test_multiqc(fastqc, tmpdir):
         log: 'log'
         params:
             analysis_directory='results'
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func=symlink_in_tempdir(
         {

@@ -4,5 +4,5 @@ channels:
   - defaults
   - conda-forge
 dependencies:
-  - rseqc >=2.6.2
-  - r-essentials
+  - rseqc ==2.6.4
+  - r-essentials ==1.5.1

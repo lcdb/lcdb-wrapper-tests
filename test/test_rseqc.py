@@ -11,7 +11,7 @@ def test_infer_experiment(sample1_se_bam, annotation_bed12, tmpdir):
                         bed='dm6.bed12'
                     output:
                         txt = 'sample1_R1.infer_experiment.txt'
-                    wrapper: "file://wrapper"
+                    wrapper: "file:wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
         {
@@ -38,7 +38,7 @@ def test_infer_experiment(sample1_se_bam, annotation_bed12, tmpdir):
     run(dpath('../wrappers/rseqc/infer_experiment'), snakefile, check, input_data_func, tmpdir, use_conda=True)
 
 
-def test_geneBody_cov(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed12, tmpdir):
+def test_gB_cov(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed12, tmpdir):
     snakefile = '''
                 rule geneBody_coverage:
                     input:
@@ -48,7 +48,7 @@ def test_geneBody_cov(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_b
                     output: txt='sample1_R1.geneBodyCoverage.txt',
                             r='sample1_R1.geneBodyCoverage.r',
                             img='sample1_R1.geneBodyCoverage.pdf',
-                    wrapper: "file://wrapper"
+                    wrapper: "file:wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
         {
@@ -94,7 +94,7 @@ def test_gB_cov_png(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed
                         img='sample1_R1.geneBodyCoverage.png',
                     params:
                         extra: = '-f png'
-                    wrapper: "file://wrapper"
+                    wrapper: "file:wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
         {
@@ -118,7 +118,7 @@ def test_tin(sample1_se_sort_bam, sample1_se_sort_bam_bai, annotation_bed12, tmp
                         bed='dm6.bed12'
                     output: table='sample1_R1.tin.tsv',
                             summary='sample1_R1.tin.summary.txt'
-                    wrapper: "file://wrapper"
+                    wrapper: "file:wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
         {
@@ -154,7 +154,7 @@ def test_bam_stat(sample1_se_bam, tmpdir):
                     input:
                         bam='sample1_R1.bam'
                     output: txt='sample1_R1.bam_stat.txt'
-                    wrapper: "file://wrapper"
+                    wrapper: "file:wrapper"
                 '''
     input_data_func=symlink_in_tempdir(
         {
