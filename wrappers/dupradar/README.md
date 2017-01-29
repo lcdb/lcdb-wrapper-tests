@@ -2,9 +2,9 @@
 
 dupRadar provides an easy way to distinguish between artifactual vs natural
 duplicate reads in RNA-Seq data. Prior to dupRadar only global duplication rates
-were used and they don't take into account the effect of gene expression levels. 
+were used and they don't take into account the effect of gene expression levels.
 dupRadar relates *duplication rates* and *length normalized read counts* of every
-gene to model the dependency of both variables. 
+gene to model the dependency of both variables.
 
 [Link to homepage](https://www.bioconductor.org/packages/release/bioc/html/dupRadar.html)
 
@@ -25,7 +25,9 @@ rule dupRadar:
         expression_boxplot='sample1.expression_boxplot.png',
         expression_barplot='sample1.expression_barplot.png',
         multimapping_histogram='sample1.multimapping_histogram.png',
-        dataframe='sample1.dupradar.tsv'
+        dataframe='sample1.dupradar.tsv',
+        curve='sample1.curve.txt',
+        model='sample1.dupradar.model.txt'
     wrapper:
         wrapper_for('dupRadar')
 ```
@@ -43,6 +45,8 @@ rule dupRadar:
         expression_boxplot='sample1.expression_boxplot.png',
         expression_barplot='sample1.expression_barplot.png',
         dataframe='sample1.dupradar.tsv'
+        curve='sample1.curve.txt',
+        model='sample1.dupradar.model.txt'
     params:
         paired=True,
         stranded=True
@@ -71,6 +75,8 @@ See that page for descriptions of outputs and how to interpret them.
 * `dataframe`: results from `analyzeDuprates` saved as a TSV for downstream
   analysis. Following the vignette, we also add the fraction of multimappers in
   each gene as the column `mhRate`.
+* `curve`: Downsampled version of the GLM fit
+* `model`: slope and intercept of the GLM
 
 ## Threads
 Threads are passed to dupRadar and are in turn passed to featureCounts, which

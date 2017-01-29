@@ -293,7 +293,9 @@ def sample1_se_dupradar(sample1_se_bam_sorted_markdups, annotation, tmpdir_facto
             expression_barplot='sample1.expression_barplot.png',
             expression_boxplot='sample1.expression_boxplot.png',
             multimapping_histogram='sample1.multimapping_histogram.png',
-            dataframe='sample1.dupradar.tsv'
+            dataframe='sample1.dupradar.tsv',
+            model='sample1.dupradar.model',
+            curve='sample1.dupradar.curve.txt'
         wrapper:
             'file://wrapper'
     '''
