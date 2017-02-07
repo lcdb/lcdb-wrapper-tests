@@ -2,7 +2,7 @@ import os
 import zipfile
 from utils import run, dpath, rm, symlink_in_tempdir
 
-def test_fastqc(sample1_se_fq, bowtie2_indexes, tmpdir):
+def test_fastq_screen(sample1_se_fq, bowtie2_indexes, tmpdir):
     snakefile = '''
     rule fastq_screen:
         input:
@@ -14,7 +14,7 @@ def test_fastqc(sample1_se_fq, bowtie2_indexes, tmpdir):
             subset=100000,
             aligner='bowtie2'
         wrapper:
-            "file://wrapper"
+            "file:wrapper"
     '''.format(indexes=bowtie2_indexes)
 
     input_data_func=symlink_in_tempdir(
