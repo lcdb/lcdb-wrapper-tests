@@ -12,7 +12,7 @@ def test_kallisto_index(transcriptome, tmpdir):
         input: fasta='transcriptome.fa'
         output: index='out/transcriptome.idx'
         log: 'log'
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func = symlink_in_tempdir(
         {
@@ -41,7 +41,7 @@ def test_kallisto_quant(tmpdir, sample1_se_fq, kallisto_index):
             h5='quant/abundance.h5',
             tsv='quant/abundance.tsv',
             json='quant/run_info.json',
-        wrapper: 'file://wrapper'
+        wrapper: 'file:wrapper'
     '''
     input_data_func = symlink_in_tempdir(
         {

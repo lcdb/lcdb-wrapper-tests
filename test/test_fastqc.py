@@ -10,7 +10,7 @@ def test_fastqc(sample1_se_fq, tmpdir):
         output:
             html='results/sample1_R1.html',
             zip='sample1_R1.zip'
-        wrapper: "file://wrapper"'''
+        wrapper: "file:wrapper"'''
     input_data_func=symlink_in_tempdir(
         {
             sample1_se_fq: 'sample1_R1.fastq.gz'

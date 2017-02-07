@@ -56,7 +56,7 @@ def test_demo(sample1_se_fq, tmpdir):
     rule demo:
         input: 'a.fastq.gz'
         output: 'b.fastq.gz'
-        wrapper: "file://wrapper"
+        wrapper: "file:wrapper"
     '''
 
     # Map fixtures to input files
@@ -120,7 +120,7 @@ def test_demo_pe(sample1_pe_fq, tmpdir):
         output:
             R1='b1.fastq.gz',
             R2='b2.fastq.gz'
-        wrapper: "file://wrapper"
+        wrapper: "file:wrapper"
     '''
 
     # Map fixture to input files
