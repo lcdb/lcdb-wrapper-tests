@@ -28,9 +28,11 @@ with open(tmp, 'w') as fout:
     for k, v in snakemake.input.items():
         if k != 'fastq':
             label = k
+            if isinstance(v, str):
+                v = [v]
             index = parse_index(v)
-            fout.write('\t'.join([
-                'DATABASE', label, index, aligner.upper()]) + '\n')
+            fout.write(
+                '\t'.join(['DATABASE', label, index, aligner.upper()]) + '\n')
     config_file = tmp
 
 # fastq_screen hard-codes filenames according to this prefix. We will send
