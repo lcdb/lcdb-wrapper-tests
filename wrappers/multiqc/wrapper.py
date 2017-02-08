@@ -15,7 +15,7 @@ extra = snakemake.params.get('extra', "")
 log = snakemake.log_fmt_shell()
 
 # MultiQC uses Click, which in turn complains if C.UTF-8 is not set
-with utils.temp_env(dict(LC_ALL='C.UTF-8', LC_LANG='C.UTF-8')) as env:
+with utils.temp_env(dict(LC_ALL='en_US.UTF-8', LC_LANG='en_US.UTF-8')) as env:
     shell(
         'multiqc '
         '--quiet '
