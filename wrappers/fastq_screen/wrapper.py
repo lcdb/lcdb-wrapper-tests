@@ -29,7 +29,7 @@ with open(tmp, 'w') as fout:
         if k != 'fastq':
             label = k
             if isinstance(v, str):
-                v = list(v)
+                v = [v]
             index = parse_index(v)
             fout.write(
                 '\t'.join(['DATABASE', label, index, aligner.upper()]) + '\n')
