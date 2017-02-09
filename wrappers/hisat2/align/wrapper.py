@@ -3,6 +3,7 @@ __copyright__ = "Copyright 2016, Ryan Dale"
 __email__ = "dalerr@niddk.nih.gov"
 __license__ = "MIT"
 
+from tempfile import NamedTemporaryFile
 from snakemake.shell import shell
 from lcdblib.snakemake import aligners
 
@@ -34,7 +35,10 @@ else:
 
 prefix = aligners.prefix_from_hisat2_index(snakemake.input.index)
 
-output_prefix = snakemake.output.bam.replace('.bam', '')
+# Create temporary files to store intermediates. Will use $TMDPIR if set.
+sam = NamedTemporaryFile(suffix='.sam', delete=False).name
+bam = NamedTemporaryFile(suffix='.bam', delete=False).name
+sort_bam = NamedTemporaryFile(suffix='.sort.bam', delete=False).name
 
 shell(
     "hisat2 "
@@ -42,7 +46,7 @@ shell(
     "{fastqs} "
     "--threads {snakemake.threads} "
     "{hisat2_extra} "
-    "-S {output_prefix}.sam "
+    "-S {sam} "
     "{log}"
 )
 
@@ -50,16 +54,17 @@ shell(
 shell(
     "samtools view -Sb "
     "{samtools_view_extra} "
-    "{output_prefix}.sam "
-    "> {output_prefix}.tmp.bam && rm {output_prefix}.sam"
+    "{sam} "
+    "> {bam} && rm {sam}"
 )
 
 # sort the BAM and clean up
 shell(
     "samtools sort "
-    "-o {snakemake.output.bam} "
+    "-o {sort_bam} "
     "{samtools_sort_extra} "
     "-O BAM "
-    "{output_prefix}.tmp.bam "
-    "&& rm {output_prefix}.tmp.bam "
+    "{bam} "
+    "&& mv {sort_bam} {snakemake.output.bam} "
+    "&& rm {bam} "
 )
