@@ -18,17 +18,19 @@ elif hasattr(snakemake.input.bam, __iter__):
 else:
     raise ValueError("BAM must be a single file or a list of files.")
 
+tmp = NamedTemporaryFile().name
+
 shell(
     'geneBody_coverage.py '
     '-i {bam} '
-    '-o tmp '
+    '-o {tmp} '
     '-r {snakemake.input.bed} '
     '{extra} '
     '{log}'
     )
 
 shell(
-    'mv tmp.geneBodyCoverage.r {snakemake.output.r} '
-    '&& mv tmp.geneBodyCoverage.txt {snakemake.output.txt} '
-    '&& mv tmp.geneBodyCoverage.curves.* {snakemake.output.img}'
+    'mv {tmp}.geneBodyCoverage.r {snakemake.output.r} '
+    '&& mv {tmp}.geneBodyCoverage.txt {snakemake.output.txt} '
+    '&& mv {tmp}.geneBodyCoverage.curves.* {snakemake.output.img}'
     )
