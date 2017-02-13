@@ -22,13 +22,14 @@ shell(
     '&& cp {snakemake.input.bed} {bed}')
 
 shell(
-    'tin.py '
+    'cd $TMPDIR '
+    '&& tin.py '
     '-i {bam} '
     '-r {bed} '
     '{extra} '
     '{log}')
 
-name = os.path.basename(bam).rstrip('.bam')
+name = bam.rstrip('.bam')
 
 shell(
         'mv {name}.tin.xls {snakemake.output.table} '
