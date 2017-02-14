@@ -8,6 +8,7 @@ from snakemake.shell import shell
 extra = snakemake.params.get('extra', '')
 # This lets us handle whether to write to a log file or to write to stdout.
 # See snakemake.script.log_fmt_shell for details.
+snakemake.log = os.path.realpath(str(snakemake.log))
 log = snakemake.log_fmt_shell(stdout=False)
 
 # Get directories that I need to move between
