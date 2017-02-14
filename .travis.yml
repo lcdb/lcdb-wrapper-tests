@@ -3,4 +3,5 @@ install: bash travis-setup.sh
 before_script:
   - export PATH=$HOME/anaconda/bin:$PATH
   - export JAVA_HOME=
+  - export TMPDIR=/tmp
 script: py.test test -v
