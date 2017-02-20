@@ -65,6 +65,7 @@ shell(
     "{samtools_sort_extra} "
     "-O BAM "
     "{bam} "
-    "&& mv {sort_bam} {snakemake.output.bam} "
+    "&& cp {sort_bam} {snakemake.output.bam} "
     "&& rm {bam} "
+    "&& rm {sort_bam} "
 )

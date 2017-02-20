@@ -6,21 +6,42 @@ from snakemake.shell import shell
 # All wrappers must be able to handle an optional params.extra.
 extra = snakemake.params.get('extra', '')
 
-
 # This lets us handle whether to write to a log file or to write to stdout.
 # See snakemake.script.log_fmt_shell for details.
-log = snakemake.log_fmt_shell()
+if snakemake.log:
+    snakemake.log = os.path.realpath(str(snakemake.log))
 
-tmp = NamedTemporaryFile().name
+log = snakemake.log_fmt_shell(stdout=False)
 
+# Get directories that I need to move between
+cwd = os.getcwd()
+tmpdir = os.getenv('TMPDIR')
+
+# Copy files over to ease I/O on filesystem.
+bam = NamedTemporaryFile(suffix='.bam').name
+bed = NamedTemporaryFile(suffix='.bed').name
+name = bam.rstrip('.bam')
+
+shell(
+    'cp {snakemake.input.bam} {bam} '
+    '&& cp {snakemake.input.bed} {bed}')
+
+os.chdir(tmpdir)
 shell(
     'infer_experiment.py '
-    '-i {snakemake.input.bam} '
-    '-r {snakemake.input.bed} '
+    '-i {bam} '
+    '-r {bed} '
     '{extra} '
-    '> {tmp} '
+    '> {name}.txt '
     '{log}')
 
+# Cleanup 1
 shell(
-    'mv {tmp} {snakemake.output.txt}'
-        )
+    'rm {bam} '
+    '&& rm {bed}')
+
+# Move outputs
+os.chdir(cwd)
+shell(
+    'cp {name}.txt {snakemake.output.txt} '
+    '&& rm {name}.txt')
