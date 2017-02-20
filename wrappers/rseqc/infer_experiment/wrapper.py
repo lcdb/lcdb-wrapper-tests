@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 from tempfile import NamedTemporaryFile
 from snakemake.shell import shell
 
