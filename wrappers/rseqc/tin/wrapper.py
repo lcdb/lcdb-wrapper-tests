@@ -21,6 +21,7 @@ tmpdir = os.getenv('TMPDIR')
 # tmp I need to copy the BAM over to tmp.
 bam = NamedTemporaryFile(suffix='.bam').name
 bed = NamedTemporaryFile(suffix='.bed').name
+name = bam.rstrip('.bam')
 
 shell(
     'cp {snakemake.input.bam} {bam} '
@@ -35,9 +36,16 @@ shell(
     '{extra} '
     '{log}')
 
-name = bam.rstrip('.bam')
+# Cleanup 1
+shell(
+    'rm {bam} '
+    '&& rm {bam}.bai '
+    '&& rm {bed}')
 
+# Move outputs
 os.chdir(cwd)
 shell(
-    'mv {name}.tin.xls {snakemake.output.table} '
-    '&& mv {name}.summary.txt {snakemake.output.summary}')
+    'cp {name}.tin.xls {snakemake.output.table} '
+    '&& cp {name}.summary.txt {snakemake.output.summary} '
+    '&& rm {name}.tin.xls '
+    '&& rm {name}.summary.txt')
