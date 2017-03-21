@@ -8,4 +8,4 @@ dependencies:
   - bioconda::pytest ==3.0.5
   - bioconda::samtools ==1.4
   - bioconda::snakemake ==3.11.2
-  - lcdblib ==0.1
+  - lcdb::lcdblib ==0.1
