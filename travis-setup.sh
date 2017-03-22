@@ -15,4 +15,4 @@ conda config --add channels bioconda
 conda config --add channels lcdb
 
 conda install -y python=3.5
-conda env update --file environment.yaml
+conda env update -n root --file environment.yaml
