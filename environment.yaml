@@ -1,7 +1,6 @@
 # only put tools that are needed for tests (e.g., `bowtie-build` is needed to make sure
 # that bowtie-index worked), not for the wrappers themselves, which should have
 # their own environment.yml files.
-name: lcdb-wrapper-tests
 dependencies:
   - bioconda::bowtie2 ==2.3.0
   - bioconda::gffutils ==0.8.7.1
